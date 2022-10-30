@@ -6,7 +6,7 @@
 
 1. [Scripting](https://docs.unity3d.com/Manual/ScriptingSection.html) in Unity
    - [Setup up scripting environment](https://docs.unity3d.com/Manual/ScriptingSettingUp.html)
-   - [Scripting concepts](https://docs.unity3d.com/Manual/ScriptingConcepts.html)
+   - [Scripting concepts](https://docs.unity3d.com/Manual/ScriptingConcepts.html)<details><summary>script lifecycle flowchart</summary>![monobehaviour flowchart](https://docs.unity3d.com/uploads/Main/monobehaviour_flowchart.svg)</details>
    - [Important classes](https://docs.unity3d.com/Manual/ScriptingImportantClasses.html)
    - [Unity architecture](https://docs.unity3d.com/Manual/unity-architecture.html)
    - [Plug-ins](https://docs.unity3d.com/Manual/Plugins.html)
@@ -31,3 +31,6 @@
 10. `Pixels Per Unit`
     - New assets default to 100 pixels per Unity unit.
     - Bigger asset = less `Pixels Per Unit`
+11. Creating a `Reference`
+    - If we want to access / change / call anything other than this game object's transform, we need to create a reference
+    - We need to tell Unity what the "thing" is that we are referring to.
