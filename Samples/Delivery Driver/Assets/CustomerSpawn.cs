@@ -6,7 +6,7 @@ public class CustomerSpawn : MonoBehaviour
 	[SerializeField] List<GameObject> customerObjects;
 
 	private static readonly System.Random random = new();
-	private static readonly int spawnDistance = 20;
+	private static readonly int spawnDistance = 8;
 
 	private void Start()
 	{
@@ -20,7 +20,7 @@ public class CustomerSpawn : MonoBehaviour
 	private GameObject GenerateCustomer(GameObject customerToSpawn, Transform house)
 	{
 		var spawnParent = GetSpawnObject();
-		var customerPosition = house.transform.position + house.transform.forward * spawnDistance;
+		var customerPosition = house.transform.position + house.transform.up * spawnDistance;
 		var customer = Instantiate(customerToSpawn, customerPosition, customerToSpawn.transform.rotation, spawnParent);
 		var customerData = customer.GetComponent<CustomerDataComponent>();
 		customerData.Address = "123 NVQ";
@@ -31,7 +31,7 @@ public class CustomerSpawn : MonoBehaviour
 	{
 		while (true)
 		{
-			var houseIndex = random.Next(transform.childCount + 1);
+			var houseIndex = random.Next(transform.childCount);
 			var house = transform.GetChild(houseIndex);
 			if (house.name.Contains("intersection", System.StringComparison.OrdinalIgnoreCase))
 				continue;

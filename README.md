@@ -13,7 +13,6 @@
    - [C# Job System](https://docs.unity3d.com/Manual/JobSystem.html)
 2. [MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html)'s callbacks
    - [Start()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html), [Update()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html)
-   - [OnTriggerEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerEnter2D.html), [OnCollisionEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnCollisionEnter2D.html)
 3. Transform - [manual](https://docs.unity3d.com/Manual/class-Transform.html) - [script](https://docs.unity3d.com/ScriptReference/Transform.html)
    - [Transform.Rotate()](https://docs.unity3d.com/ScriptReference/Transform.Rotate.html)
    - [Transform.Translate()](https://docs.unity3d.com/ScriptReference/Transform.Translate.html)
@@ -25,6 +24,7 @@
    - To make a value becomes frame independent, `value * Time.deltaTime`
 7. [Collider2D](https://docs.unity3d.com/ScriptReference/Collider2D.html) and [Rigidbody2D](https://docs.unity3d.com/ScriptReference/Rigidbody2D.html) (involve in [Collision2D](https://docs.unity3d.com/ScriptReference/Collision2D.html))
    - `Rigidbody2D` put the sprite under the control of physics engine
+   - [OnTriggerEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerEnter2D.html), [OnCollisionEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnCollisionEnter2D.html)
 8. Sprites are made of pixels
    - Resolution refers to the number of pixels in an image (higher resolution = more pixels)
 9. Unity unit
