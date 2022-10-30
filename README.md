@@ -11,13 +11,14 @@
    - [Unity architecture](https://docs.unity3d.com/Manual/unity-architecture.html)
    - [Plug-ins](https://docs.unity3d.com/Manual/Plugins.html)
    - [C# Job System](https://docs.unity3d.com/Manual/JobSystem.html)
-2. [Transform](https://docs.unity3d.com/ScriptReference/Transform.html)
+2. [MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html)'s callbacks
+   - [Start()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html), [Update()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html)
+   - [OnTriggerEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerEnter2D.html), [OnCollisionEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnCollisionEnter2D.html)
+3. Transform - [manual](https://docs.unity3d.com/Manual/class-Transform.html) - [script](https://docs.unity3d.com/ScriptReference/Transform.html)
    - [Transform.Rotate()](https://docs.unity3d.com/ScriptReference/Transform.Rotate.html)
    - [Transform.Translate()](https://docs.unity3d.com/ScriptReference/Transform.Translate.html)
    - [Transform.position](https://docs.unity3d.com/ScriptReference/Transform-position.html) _(can use this property to make a follow camera)_
-3. [MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html)'s callbacks
-   - [Start()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html), [Update()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html)
-   - [OnTriggerEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnTriggerEnter2D.html), [OnCollisionEnter2D()](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnCollisionEnter2D.html)
+   - [Transform.rotation](https://docs.unity3d.com/ScriptReference/Transform-rotation.html) is a [quaternion](https://docs.unity3d.com/ScriptReference/Quaternion.html) that stores the rotation of the Transform in world space.
 4. [Script serialization](https://docs.unity3d.com/Manual/script-Serialization.html) and [SerializeField](https://docs.unity3d.com/ScriptReference/SerializeField.html)
 5. [Input](https://docs.unity3d.com/ScriptReference/Input.html), [Input.GetAxis](https://docs.unity3d.com/ScriptReference/Input.GetAxis.html), [Input.GetButton](https://docs.unity3d.com/ScriptReference/Input.GetButton.html)
 6. The interval in seconds from the last frame to the current one (depend on CPU computing strength): [Time.deltaTime](https://docs.unity3d.com/ScriptReference/Time-deltaTime.html)
@@ -34,3 +35,7 @@
 11. Creating a `Reference`
     - If we want to access / change / call anything other than this game object's transform, we need to create a reference
     - We need to tell Unity what the "thing" is that we are referring to.
+12. Group game objects using [Tags](https://docs.unity3d.com/Manual/Tags.html)
+13. Creating [Prefabs](https://docs.unity3d.com/Manual/CreatingPrefabs.html), and [instantiating Prefabs at run time](https://docs.unity3d.com/Manual/InstantiatingPrefabs.html)
+14. Spawn game objects randomly/repeatedly <details><summary>_show more_</summary> - [how to spawn an object](https://gamedevbeginner.com/how-to-spawn-an-object-in-unity-using-instantiate/) - [how to spawn anything](https://www.youtube.com/watch?v=gsU7mZv3TtI)</details>
+15. [How to reference to another game objects (parent, children)?](https://stackoverflow.com/questions/22377372/unity-how-to-reference-an-object-from-a-different-one)
