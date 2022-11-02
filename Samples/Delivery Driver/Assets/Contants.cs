@@ -1,5 +1,7 @@
 public static class Constants
 {
-	public static readonly string HorizontalAxis = "Horizontal";
-	public static readonly string VerticalAxis = "Vertical";
+	public const string HorizontalAxis = "Horizontal";
+	public const string VerticalAxis = "Vertical";
+	public const string PackageTag = "Package";
+	public const string CustomerTag = "Customer";
 }
