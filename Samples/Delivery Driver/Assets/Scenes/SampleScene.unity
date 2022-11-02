@@ -3576,7 +3576,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 473444250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e4992e6e97b6486d8b56c956de56dd8, type: 3}
+  m_Script: {fileID: 11500000, guid: 088025f3ccc2141dbaf982117cd05559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   packageObjects:
@@ -3586,6 +3586,13 @@ MonoBehaviour:
   - {fileID: 2747125405525630722, guid: 9d539e28b543c43308020acd9145a259, type: 3}
   - {fileID: 2747125405525630722, guid: 9d539e28b543c43308020acd9145a259, type: 3}
   - {fileID: 2747125405525630722, guid: 9d539e28b543c43308020acd9145a259, type: 3}
+  customerObjects:
+  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
+  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
+  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
+  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
+  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
+  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
 --- !u!1 &481348126
 GameObject:
   m_ObjectHideFlags: 0
@@ -12557,7 +12564,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1645914804}
-  - component: {fileID: 1645914805}
   m_Layer: 0
   m_Name: Houses
   m_TagString: Untagged
@@ -12621,25 +12627,6 @@ Transform:
   m_Father: {fileID: 1424379086}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1645914805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645914803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52c75caa3fee94d808323cb7fc4dd607, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  customerObjects:
-  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
-  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
-  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
-  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
-  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
-  - {fileID: 2731758580783677711, guid: 34a261e9ed64c43769c3aa5059e76fa5, type: 3}
 --- !u!1 &1657055038
 GameObject:
   m_ObjectHideFlags: 0
