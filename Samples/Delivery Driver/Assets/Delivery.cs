@@ -32,7 +32,8 @@ public class Delivery : MonoBehaviour
 				reachPackage(other);
 				break;
 			default:
-				throw new InvalidOperationException($"GameObject's tag: {other.tag} is not supported!");
+				Debug.Log($"GameObject's tag: {other.tag} is not supported!");
+				break;
 		}
 	}
 
