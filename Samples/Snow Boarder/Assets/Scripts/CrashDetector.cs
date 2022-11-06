@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class CrashDetector : MonoBehaviour
 {
 	[SerializeField] AudioSource crashSound;
+	[SerializeField] ParticleSystem crashEffect;
 	[SerializeField] float loadDelay = 0.7f;
 
 	private bool crashed = false;
@@ -12,6 +13,7 @@ public class CrashDetector : MonoBehaviour
 	{
 		if (!crashed && other.gameObject.tag == Constants.GroundTag)
 		{
+			crashEffect.Play();
 			Invoke("ReloadScene", loadDelay);
 			crashSound.Play();
 			crashed = true;
