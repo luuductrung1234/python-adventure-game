@@ -13,6 +13,8 @@ public class CrashDetector : MonoBehaviour
 	{
 		if (!crashed && other.gameObject.tag == Constants.GroundTag)
 		{
+			var controller = FindObjectOfType<PlayerController>();
+			controller.DisableControl();
 			crashEffect.Play();
 			Invoke("ReloadScene", loadDelay);
 			crashSound.Play();
