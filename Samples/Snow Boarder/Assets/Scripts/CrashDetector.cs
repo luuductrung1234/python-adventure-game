@@ -3,11 +3,23 @@ using UnityEngine.SceneManagement;
 
 public class CrashDetector : MonoBehaviour
 {
+	[SerializeField] AudioSource crashSound;
+	[SerializeField] float loadDelay = 0.7f;
+
+	private bool crashed = false;
+
 	private void OnCollisionEnter2D(Collision2D other)
 	{
-		if (other.gameObject.tag == Constants.GroundTag)
+		if (!crashed && other.gameObject.tag == Constants.GroundTag)
 		{
-			SceneManager.LoadScene(Constants.Level1Scene);
+			Invoke("ReloadScene", loadDelay);
+			crashSound.Play();
+			crashed = true;
 		}
+	}
+
+	private void ReloadScene()
+	{
+		SceneManager.LoadScene(Constants.Level1Scene);
 	}
 }
