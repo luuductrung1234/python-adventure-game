@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour
         isImmortal = false;
         isPaused = false;
         currentHealth = maxHealth;
+        Time.timeScale = 1;
     }
 
     private void LateUpdate() {
