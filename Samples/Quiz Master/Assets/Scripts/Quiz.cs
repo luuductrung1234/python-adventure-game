@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -28,6 +29,8 @@ public class Quiz : MonoBehaviour
 	private static readonly bool BTN_ENABLE = true;
 	private static readonly bool BTN_DISABLE = true;
 
+	public Action onQuizComplete;
+
 	void Start()
 	{
 		progressBar.maxValue = questions.Count;
@@ -52,11 +55,14 @@ public class Quiz : MonoBehaviour
 	private void GetNextQuestion()
 	{
 		if (questions == null || questions.Count == 0)
+		{
+			onQuizComplete?.Invoke();
 			return;
+		}
 
 		SetButtonState(BTN_ENABLE);
 		SetDefaultButtonSprite();
-		var questionIndex = Random.Range(0, questions.Count);
+		var questionIndex = UnityEngine.Random.Range(0, questions.Count);
 		currentQuestion = questions[questionIndex];
 		questions.RemoveAt(questionIndex);
 		DisplayQuestion();

@@ -16,13 +16,15 @@ public class ScoreKeeper : MonoBehaviour
 	public void IncreaseQuestionSeen()
 	{
 		questionsSeen++;
+		CalculateScore();
 	}
 
-	private void CalculateScore()
+	public int CalculateScore()
 	{
 		var score = Mathf.RoundToInt(correctAnswers / (float)questionsSeen * 100);
 		Debug.Log($"Score: {score}%");
 		scoreText.text = $"Score: {score}%";
+		return score;
 	}
 
 	public void Reset()
