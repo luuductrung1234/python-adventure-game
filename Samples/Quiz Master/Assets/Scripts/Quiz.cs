@@ -20,6 +20,9 @@ public class Quiz : MonoBehaviour
 	[Header("Score")]
 	[SerializeField] ScoreKeeper scoreKeeper;
 
+	[Header("ProgressBar")]
+	[SerializeField] Slider progressBar;
+
 	private QuestionSO currentQuestion;
 	private bool isAnswered = false;
 	private static readonly bool BTN_ENABLE = true;
@@ -27,6 +30,9 @@ public class Quiz : MonoBehaviour
 
 	void Start()
 	{
+		progressBar.maxValue = questions.Count;
+		progressBar.value = 0;
+
 		timer.timeoutAction = (bool isAnsweringQuestion) =>
 		{
 			if (isAnsweringQuestion)
@@ -55,6 +61,7 @@ public class Quiz : MonoBehaviour
 		questions.RemoveAt(questionIndex);
 		DisplayQuestion();
 		scoreKeeper.IncreaseQuestionSeen();
+		progressBar.value++;
 	}
 
 	private void DisplayQuestion()
