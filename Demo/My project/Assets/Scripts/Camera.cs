@@ -7,19 +7,14 @@ public class Camera : MonoBehaviour
     private Transform playerPos, doorX;
     private Vector3 tempPos; 
 
-    [SerializeField]
-    public float? leftX = -2f, rightX = 2f, minY = 1f;
-
+    public float leftX = -2f, rightX = 2f, minY = 1f;
 
     void Awake()
-    {
-        playerPos = GameObject.FindWithTag("Player").transform;
+    {   
+        playerPos = GameObject.Find("Player").transform;
     }
     void LateUpdate()
     {   
-        if (GameObject.Find("Door") == null){
-            rightX = null;
-        }
         tempPos = transform.position;
         tempPos.x = playerPos.position.x;
 

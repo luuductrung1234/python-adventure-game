@@ -34,13 +34,13 @@ public class Interaction : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other) {
         sr.material.color = Color.gray;
         isCollide = false;
+        
     }
 
     private void CheckAnswer(){
         if (isCollide){
             if (Input.GetKeyDown(KeyCode.E)){
                 StartCoroutine(Shake());
-                gameController.DeductHealth(1);
             }
         }
     }

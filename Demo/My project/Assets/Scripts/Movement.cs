@@ -22,7 +22,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   
-        if (!gameController.isGameOver){
+        if (gameController.walkEnable){
             Walk();
         }
         if (gameController.isGameOver){
