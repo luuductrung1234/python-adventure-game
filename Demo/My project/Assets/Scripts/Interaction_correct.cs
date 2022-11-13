@@ -39,7 +39,6 @@ public class Interaction_correct : MonoBehaviour
                 GameObject.Find("Door").SetActive(false);
                 this.gameObject.SetActive(false);
                 
-                gameController.UpdateScore();
                 gameController.HealUp();
                 gameController.isImmortal = true;
             }
