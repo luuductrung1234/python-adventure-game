@@ -11,9 +11,8 @@ public class RestartGame : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        gameController.HealUp();
         gameController.GameRestart();
         gameController.isImmortal = false;
     }
-
+    
 }

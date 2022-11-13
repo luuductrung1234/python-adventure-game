@@ -8,41 +8,29 @@ using TMPro;
 public class GameController : MonoBehaviour
 {   
     public TextMeshPro healthPointText;
+    public GameObject inputField;
     public bool isGameOver;
     public bool isImmortal;
     public bool isPaused;
-
-
-    [SerializeField]
-    private int maxHealth = 3;
-    private int currentHealth;
+    public bool walkEnable;
+    public bool canInteract;
 
     private void Awake() {
         isGameOver = false;
         isImmortal = false;
         isPaused = false;
-        currentHealth = maxHealth;
+        walkEnable = true;
+        canInteract = true;
     }
 
-    private void LateUpdate() {
-        healthPointText.text = "Health: " + currentHealth.ToString();
-        if (currentHealth == 0){
-            isGameOver = true;
+    private void LateUpdate(){
+        if (isGameOver){
+            walkEnable = false;
+            canInteract = false;
+        }else{
+            walkEnable = true;
+            canInteract = true;
         }
-    }
-
-    public void DeductHealth(int x){
-        if (!isImmortal){
-            if (currentHealth - x <= 0){
-                currentHealth = 0;
-            }else{
-                currentHealth -= x;
-            }
-        }
-    }
-
-    public void HealUp(){
-        currentHealth = maxHealth;
     }
 
     public void GameRestart(){
@@ -58,5 +46,4 @@ public class GameController : MonoBehaviour
         Time.timeScale = 1;
         isPaused = false;
     }
-
 }

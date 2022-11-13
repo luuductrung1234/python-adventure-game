@@ -11,6 +11,7 @@ public class Interaction_correct : MonoBehaviour
     private void Awake() {
         sr = GetComponent<SpriteRenderer>();
         gameController = GameObject.FindObjectOfType<GameController>();
+
 ;    }
     void Start()
     {
@@ -36,11 +37,12 @@ public class Interaction_correct : MonoBehaviour
     private void CheckAnswer(){
         if (isCollide){
             if (Input.GetKeyDown(KeyCode.E)){
-                GameObject.Find("Door").SetActive(false);
+                /*GameObject.Find("Door").SetActive(false);
                 this.gameObject.SetActive(false);
                 
                 gameController.HealUp();
                 gameController.isImmortal = true;
+                */
             }
         }
     }
