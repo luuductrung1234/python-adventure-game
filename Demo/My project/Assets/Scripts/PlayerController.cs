@@ -21,11 +21,9 @@ public class PlayerController : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-
-        speed = 10f;
     }
 
-    private void Update() {
+    private void LateUpdate() {
         Walk();
     }
 

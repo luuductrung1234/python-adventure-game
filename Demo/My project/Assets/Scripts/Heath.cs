@@ -13,6 +13,9 @@ public class Heath : MonoBehaviour
 
     private GameController gameController;
     private Transform playerPos;
+    [SerializeField]
+    private GameObject camPos;
+    private Vector3 tempPos;
 
 
     private void Awake() {
@@ -58,9 +61,9 @@ public class Heath : MonoBehaviour
     IEnumerator Shake() {
         for ( int i = 0; i < 5; i++)
            {
-               playerPos.localPosition += new Vector3(0.1f, 0, 0);
+                playerPos.localPosition += new Vector3(0.1f, 0, 0);
                yield return new WaitForSeconds(0.01f);
-               playerPos.localPosition -= new Vector3(0.1f, 0, 0);
+                playerPos.localPosition -= new Vector3(0.1f, 0, 0);
                yield return new WaitForSeconds(0.01f);
                 playerPos.localPosition -= new Vector3(0.1f, 0, 0);
                yield return new WaitForSeconds(0.01f);
