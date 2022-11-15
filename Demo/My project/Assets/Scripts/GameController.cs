@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour
     public bool isPaused;
     public bool walkEnable;
     public bool canInteract;
+    public bool isFreezeCam;
 
     private void Awake() {
         isGameOver = false;
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour
         isPaused = false;
         walkEnable = true;
         canInteract = true;
+        isFreezeCam = false;
     }
 
     private void LateUpdate(){
