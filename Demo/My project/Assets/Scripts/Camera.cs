@@ -8,7 +8,7 @@ public class Camera : MonoBehaviour
     private Vector3 tempPos; 
     private GameController gameController;
 
-    public float leftX = -2f, rightX = 2f, minY = 1f;
+    public float leftX, rightX, minY = 1f;
 
     void Awake()
     {   
@@ -20,6 +20,7 @@ public class Camera : MonoBehaviour
         if (!gameController.isFreezeCam){
             tempPos = transform.position;
             tempPos.x = playerPos.position.x;
+            tempPos.y = playerPos.position.y;
 
             if (tempPos.x < leftX){
                 tempPos.x = (float) leftX;
