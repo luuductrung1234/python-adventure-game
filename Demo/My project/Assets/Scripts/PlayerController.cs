@@ -5,8 +5,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private float speed, animSpeed;
+    private float speed, jumpFroces;
     private float moveX;
+
 
     private string WALK_ANIMATION = "Walk";
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate() {
         Walk();
+        PLayerJump();
     }
 
 
@@ -48,6 +50,19 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+    }
+
+    bool isOnGround = true;
+    void PLayerJump(){
+        if (Input.GetButtonDown("Jump") && isOnGround){
+            isOnGround = false;
+            myBody.AddForce(new Vector2(0f, jumpFroces), ForceMode2D.Impulse);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Trap")){
+            isOnGround = true;
+        }
     }
 
 }
