@@ -7,7 +7,6 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {   
-    public TextMeshPro healthPointText;
     public GameObject inputField;
     public bool isGameOver;
     public bool isImmortal;

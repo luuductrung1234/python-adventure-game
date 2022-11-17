@@ -2,16 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Interaction : MonoBehaviour
 {   
     private SpriteRenderer sr;
-    private GameController hp;
     private GameController gameController;
+    private Room1Quizzes myQuiz;
+    public Dialogue myDialogue;
+    private Heath hp;
+
+
+    [SerializeField]
+    private int choiceIndex;
+    private bool isCorrectChoice;
 
     private void Awake() {
         sr = GetComponent<SpriteRenderer>();
         gameController = GameObject.FindObjectOfType<GameController>();
+        myQuiz = GameObject.FindObjectOfType<Room1Quizzes>();
+        hp = GameObject.FindObjectOfType<Heath>();
     }
 
     void Start()
@@ -22,6 +32,11 @@ public class Interaction : MonoBehaviour
     void Update()
     {
         CheckAnswer();
+        if (myQuiz.currentQuiz == 2){
+            myQuiz.Proceed();
+            myQuiz.currentQuiz=99;
+        }
+
     }
 
 
@@ -37,26 +52,19 @@ public class Interaction : MonoBehaviour
         
     }
 
+
+
     private void CheckAnswer(){
         if (isCollide){
-            if (Input.GetKeyDown(KeyCode.E)){
-                StartCoroutine(Shake());
+            if (Input.GetKeyDown(KeyCode.E) && myQuiz.currentQuiz < 3){
+                myDialogue.SkipText();
+                if (choiceIndex == myQuiz.correctAns[myQuiz.currentQuiz]){
+                    myQuiz.currentQuiz++;
+                    myDialogue.NextLine();
+                }else{
+                    hp.DeductHealth();
+                }
             }
         }
     }
-     IEnumerator Shake() {
-           for ( int i = 0; i < 5; i++)
-           {
-               transform.localPosition += new Vector3(0.1f, 0, 0);
-               yield return new WaitForSeconds(0.01f);
-               transform.localPosition -= new Vector3(0.1f, 0, 0);
-               yield return new WaitForSeconds(0.01f);
-                transform.localPosition -= new Vector3(0.1f, 0, 0);
-               yield return new WaitForSeconds(0.01f);
-                transform.localPosition += new Vector3(0.1f, 0, 0);
-               yield return new WaitForSeconds(0.01f);
-           }
-     }
-
-
 }

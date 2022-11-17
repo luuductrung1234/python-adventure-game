@@ -58,7 +58,11 @@ public class Heath : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    IEnumerator Shake() {
+    public void HealUp1(){
+        currentHealth += 1;
+    }
+
+    IEnumerator Shake() {   
         for ( int i = 0; i < 5; i++)
            {
                 playerPos.localPosition += new Vector3(0.1f, 0, 0);

@@ -11,8 +11,6 @@ public class _test : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        heath.DeductHealth();
+        heath.HealUp1();
     }
-
-
 }

@@ -1379,7 +1379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61758b3ba94b137449dbd2580ab72769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abc: 0
+  leftX: 0
+  rightX: 0
+  minY: 1
 --- !u!1 &565515747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,8 +1708,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5c682d91eeec1c4f8c1c120bb9bbcde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameController: {fileID: 0}
-  inputField: {fileID: 1285385504}
 --- !u!4 &831356463
 Transform:
   m_ObjectHideFlags: 0
@@ -2472,7 +2472,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -494.71, y: -223.76}
+  m_AnchoredPosition: {x: -494.21, y: -223.16}
   m_SizeDelta: {x: 45, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1285385506
@@ -3457,8 +3457,9 @@ MonoBehaviour:
   isGameOver: 0
   isImmortal: 0
   isPaused: 0
-  enableWalk: 0
-  maxHealth: 3
+  walkEnable: 0
+  canInteract: 0
+  isFreezeCam: 0
 --- !u!4 &1721280231
 Transform:
   m_ObjectHideFlags: 0
