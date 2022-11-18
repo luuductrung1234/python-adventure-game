@@ -39,6 +39,7 @@ namespace InGameCodeEditor
 		/// Should auto indent be used for this language.
 		/// </summary>
 		public bool allowAutoIndent = true;
+		public bool legacyAutoIndent = true;
 		/// <summary>
 		/// The character that causes the indent level to increase.
 		/// </summary>

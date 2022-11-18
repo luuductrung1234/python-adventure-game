@@ -43,6 +43,10 @@ namespace InGameCodeEditor
 		/// Is syntax highlighting of the input field text allowed by this theme.
 		/// </summary>
 		public bool allowSyntaxHighlighting = true;
+		/// <summary>
+		/// size of tab character
+		/// </summary>
+		public int tabWidth = 10;
 
 		// Properties
 		/// <summary>

@@ -46,5 +46,6 @@ MonoBehaviour:
   autoIndent:
     autoIndentMode: 2
     allowAutoIndent: 1
-    indentIncreaseCharacter: 123
-    indentDecreaseCharacter: 125
+    legacyAutoIndent: 0
+    indentIncreaseCharacter: 58
+    indentDecreaseCharacter: 58

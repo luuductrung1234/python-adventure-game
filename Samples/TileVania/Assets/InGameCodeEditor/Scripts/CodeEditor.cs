@@ -302,7 +302,6 @@ namespace InGameCodeEditor
 		/// </summary>
 		public void LateUpdate()
 		{
-
 			if (Input.mouseScrollDelta != Vector2.zero || inputField.verticalScrollbar.value != lastScrollValue)
 			{
 				UpdateCurrentLineHighlight();
@@ -318,7 +317,9 @@ namespace InGameCodeEditor
 					// Auto indent for new line
 					AutoIndentCaret(false);
 				}
-				else if (Input.anyKeyDown == true && Input.inputString.Contains(languageTheme.autoIndent.IndentDecreaseString) == true)
+				else if (Input.anyKeyDown == true
+					&& Input.inputString.Contains(languageTheme.autoIndent.IndentDecreaseString) == true
+					&& languageTheme.autoIndent.legacyAutoIndent)
 				{
 					// Auto indent for closing token
 					AutoIndentCaret(true);
@@ -365,7 +366,7 @@ namespace InGameCodeEditor
 		}
 
 		/// <summary>
-		/// Causes the displayed text content to be refreshed and rehighlighted if it has changed.
+		/// Causes the displayed text content to be refreshed and re-highlighted if it has changed.
 		/// </summary>
 		/// <param name="forceUpdate">Forcing an update will cause the text to be refreshed even if it has not changed</param>
 		/// <param name="updateLineOnly">Should only the current line be refreshed or the whole text</param>
@@ -551,8 +552,12 @@ namespace InGameCodeEditor
 
 			currentIndent = 0;
 
+			#region legacy auto indent calculation
+
 			// Check for auto indent allowed
-			if (languageTheme != null && languageTheme.autoIndent.allowAutoIndent == true)
+			if (languageTheme != null
+				&& languageTheme.autoIndent.allowAutoIndent == true
+				&& languageTheme.autoIndent.legacyAutoIndent)
 			{
 				for (int i = 0; i < inputField.caretPosition && i < inputField.text.Length; i++)
 				{
@@ -568,10 +573,45 @@ namespace InGameCodeEditor
 						currentIndent--;
 				}
 
-				// Dont allow negative indents
+				// Don't allow negative indents
 				if (currentIndent < 0)
 					currentIndent = 0;
 			}
+
+			#endregion
+
+			#region python auto indent calculation
+
+			if (languageTheme != null
+				&& languageTheme.autoIndent.allowAutoIndent == true
+				&& !languageTheme.autoIndent.legacyAutoIndent
+				&& currentLine > 0) // skip the first line (index 0)
+			{
+				// indent of current line base on indent of previous line
+				var previousLine = inputText.textInfo.lineInfo[currentLine - 1];
+
+				// check for invalid indent characters
+				for (int i = previousLine.firstCharacterIndex; i < previousLine.firstVisibleCharacterIndex; i++)
+				{
+					// Get the character
+					char character = inputField.text[i];
+					if (character != '\t')
+					{
+						Debug.LogError($"Found invalid indent character at : {i}");
+						return;
+					}
+				}
+
+				if (previousLine.length > 0)
+				{
+					if (inputField.text[previousLine.lastVisibleCharacterIndex] == languageTheme.autoIndent.indentIncreaseCharacter)
+						currentIndent = previousLine.firstVisibleCharacterIndex - previousLine.firstCharacterIndex + 1;
+					else
+						currentIndent = previousLine.firstVisibleCharacterIndex - previousLine.firstCharacterIndex;
+				}
+			}
+
+			#endregion
 		}
 
 		private void UpdateCurrentLineHighlight()
@@ -646,15 +686,20 @@ namespace InGameCodeEditor
 				// Update line column and indent positions
 				UpdateCurrentLineColumnIndent();
 
-				// Build indent string
-				string indent = string.Empty;
+				// Check for tabs before caret
+				int caretIndentCount = 0;
 
-				// Make sure we have some text
-				if (inputField.caretPosition < inputField.text.Length)
+				if (languageTheme.autoIndent.autoIndentMode == AutoIndent.IndentMode.AutoTabContextual)
 				{
-					// Check for tabs before caret
+					// Take into account any previous tab characters
+					caretIndentCount = currentIndent;
+				}
+				else if (inputField.caretPosition < inputField.text.Length)
+				{
+					Debug.Log("We have some text");
+
 					int beforeIndentCount = 0;
-					int caretIndentCount = 0;
+
 					for (int i = inputField.caretPosition; i >= 0; i--)
 					{
 						// Check for tab characters
@@ -662,53 +707,28 @@ namespace InGameCodeEditor
 							beforeIndentCount++;
 
 						// Check for previous line or spaces
-						if (inputField.text[i] == '\n' || (languageTheme.autoIndent.autoIndentMode == AutoIndent.IndentMode.AutoTabContextual && inputField.text[i] != ' '))
-							if (i != inputField.caretPosition)
-								break;
+						if ((inputField.text[i] == '\n'
+								|| (languageTheme.autoIndent.autoIndentMode == AutoIndent.IndentMode.AutoTabContextual
+								&& inputField.text[i] != ' '))
+							&& i != inputField.caretPosition)
+							break;
 					}
 
-					if (languageTheme.autoIndent.autoIndentMode == AutoIndent.IndentMode.AutoTabContextual)
-					{
-						// Take into account any previous tab characters
-						caretIndentCount = currentIndent - caretIndentCount;
-					}
-					else
-					{
-						caretIndentCount = beforeIndentCount;
-					}
-
-					indent = GetAutoIndentTab(caretIndentCount);
-
-					//int length = 0;
-
-					//for(int i = inputField.caretPosition + 1; i < inputField.text.Length; i++, length++)
-					//{
-					//    if (inputField.text[i] == '\n')
-					//        break;
-					//}
-
-					//int caret = 0;
-					//string formatted = languageTheme.autoIndent.GetAutoIndentedFormattedString(inputField.text.Substring(inputField.caretPosition + 1, length), currentIndent, out caret);
-
-					//inputField.text = inputField.text.Remove(inputField.caretPosition + 1, length);
-					//inputField.text = inputField.text.Insert(inputField.caretPosition + 1, formatted);
-
-					//inputField.stringPosition = inputField.stringPosition + caret;
-					//return;
+					caretIndentCount = beforeIndentCount;
 				}
 
+				// Build indent string
+				var indent = GetAutoIndentTab(caretIndentCount);
 
 				if (indent.Length > 0)
 				{
 					// Get caret position
-					inputField.text = inputField.text.Insert(inputField.caretPosition + 1, indent);
+					inputField.text = inputField.text.Insert(inputField.caretPosition, indent);
 
 					// Move to the end of the new line
-					inputField.stringPosition = inputField.stringPosition + indent.Length;
+					inputField.stringPosition += indent.Length;
 				}
 
-				//if (languageTheme.autoIndent.autoIndentMode == AutoIndent.IndentMode.AutoTabContextual)
-				//{
 				// Check for closing bracket
 				bool immediateClosing = false;
 				int closingOffset = -1;
@@ -751,21 +771,15 @@ namespace InGameCodeEditor
 					UpdateCurrentLineColumnIndent();
 				}
 			}
-			//}
 
-			// Check for closing token
+			// Check for closing token and tab before caret
 			if (isClosingToken == true)
 			{
-				if (inputField.caretPosition > 0)
+				if (inputField.caretPosition > 0 && inputField.text[inputField.caretPosition - 1] == '\t')
 				{
-					// Check for tab before caret
-					if (inputField.text[inputField.caretPosition - 1] == '\t')
-					{
-						// Remove 1 tab because we have received a closing token
-						inputField.text = inputField.text.Remove(inputField.caretPosition - 1, 1);
-
-						inputField.stringPosition = inputField.stringPosition - 1;
-					}
+					// Remove 1 tab because we have received a closing token
+					inputField.text = inputField.text.Remove(inputField.caretPosition - 1, 1);
+					inputField.stringPosition--;
 				}
 			}
 
@@ -807,6 +821,16 @@ namespace InGameCodeEditor
 			// Apply theme colors
 			inputField.caretColor = editorTheme.caretColor;
 			inputText.color = editorTheme.textColor;
+
+			// Apply font setting
+			if (inputText.font != null)
+			{
+				var fi = inputText.font.faceInfo;
+				fi.tabWidth = editorTheme.tabWidth;
+				inputText.font.faceInfo = fi;
+				inputText.UpdateFontAsset();
+			}
+
 			inputHighlightText.color = editorTheme.textColor;
 			background.color = editorTheme.backgroundColor;
 			lineHighlight.color = editorTheme.lineHighlightColor;
