@@ -12,8 +12,8 @@ namespace InGameCodeEditor.Lexer
 	public sealed class KeywordGroupMatch : MatchLexer
 	{
 		// Private
-		private static HashSet<string> shortlist = new HashSet<string>();
-		private static Stack<string> removeList = new Stack<string>();
+		private static readonly HashSet<string> shortlist = new();
+		private static readonly Stack<string> removeList = new();
 		[NonSerialized]
 		private string[] keywordCache = null;
 		[NonSerialized]
@@ -66,9 +66,7 @@ namespace InGameCodeEditor.Lexer
 			get
 			{
 				// Get html color
-				if (htmlColor == null)
-					htmlColor = "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
-
+				htmlColor ??= "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
 				return htmlColor;
 			}
 		}
@@ -174,11 +172,8 @@ namespace InGameCodeEditor.Lexer
 		private void BuildKeywordCache()
 		{
 			// Check if we need to build the cache
-			if (keywordCache == null)
-			{
-				// Get keyowrds and insert them into a cache array for quick reference
-				keywordCache = keywords.Split(' ');
-			}
+			// Get keywords and insert them into a cache array for quick reference
+			keywordCache ??= keywords.Split(' ');
 		}
 
 		private bool CompareChar(char a, char b)

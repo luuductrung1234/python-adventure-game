@@ -11,8 +11,8 @@ namespace InGameCodeEditor.Lexer
 	public sealed class SymbolGroupMatch : MatchLexer
 	{
 		// Private
-		private static readonly List<string> shortlist = new List<string>();
-		private static readonly Stack<string> removeList = new Stack<string>();
+		private static readonly List<string> shortlist = new();
+		private static readonly Stack<string> removeList = new();
 		[NonSerialized]
 		private string[] symbolCache = null;
 		[NonSerialized]
@@ -49,9 +49,7 @@ namespace InGameCodeEditor.Lexer
 			get
 			{
 				// Get html color
-				if (htmlColor == null)
-					htmlColor = "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
-
+				htmlColor ??= "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
 				return htmlColor;
 			}
 		}
@@ -63,7 +61,7 @@ namespace InGameCodeEditor.Lexer
 		{
 			get
 			{
-				// Make sure cahce is created
+				// Make sure cache is created
 				BuildSymbolCache();
 
 				// Get the first character of each symbol
@@ -80,12 +78,12 @@ namespace InGameCodeEditor.Lexer
 		{
 			get
 			{
-				// Make sure cahce is created
+				// Make sure cache is created
 				BuildSymbolCache();
 
 				// Get the first character of each symbol
 				foreach (string symbol in symbolCache)
-					yield return symbol[symbol.Length - 1];
+					yield return symbol[^1];
 			}
 		}
 
@@ -99,7 +97,7 @@ namespace InGameCodeEditor.Lexer
 		}
 
 		/// <summary>
-		/// Checks whether the specified lexer has a valid symbol at its current posiiton.
+		/// Checks whether the specified lexer has a valid symbol at its current position.
 		/// </summary>
 		/// <param name="lexer">The input lexer to check</param>
 		/// <returns>True if the stream has a symbol or false if not</returns>

@@ -54,5 +54,6 @@
     "ProjectSettings/": true,
     "temp/": true,
     "Temp/": true
-  }
+  },
+  "cSpell.words": ["cref", "Scriptable"]
 }

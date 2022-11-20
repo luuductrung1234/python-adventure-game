@@ -14,7 +14,7 @@ namespace InGameCodeEditor
 	public class CodeLanguageTheme : ScriptableObject
 	{
 		// Internal
-		internal static readonly StringBuilder sharedBuilder = new StringBuilder();
+		internal static readonly StringBuilder sharedBuilder = new();
 
 		// Private
 		[NonSerialized]
@@ -32,7 +32,7 @@ namespace InGameCodeEditor
 		/// Only single characters are allowed and must be separated by a space if multiple symbols need to be specified.
 		/// </summary>
 		[TextArea]
-		[Tooltip("Any special characters that can act as delimiters when they are immediatley before or after a keyword. Single characters only separated by a space")]
+		[Tooltip("Any special characters that can act as delimiters when they are immediately before or after a keyword. Single characters only separated by a space")]
 		public string delimiterSymbols;
 		/// <summary>
 		/// An array of keyword groups used to specify which words should be highlighted.
@@ -101,12 +101,14 @@ namespace InGameCodeEditor
 			{
 				if (matchers == null)
 				{
-					List<MatchLexer> matcherList = new List<MatchLexer>();
-					matcherList.Add(commentGroup);
+					List<MatchLexer> matcherList = new()
+					{
+						commentGroup,
+						symbolGroup,
+						numberGroup,
+						literalGroup
+					};
 					matcherList.AddRange(keywordGroups);
-					matcherList.Add(symbolGroup);
-					matcherList.Add(numberGroup);
-					matcherList.Add(literalGroup);
 
 					matchers = matcherList.ToArray();
 				}

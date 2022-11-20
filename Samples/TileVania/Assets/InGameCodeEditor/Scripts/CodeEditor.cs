@@ -444,39 +444,13 @@ namespace InGameCodeEditor
 				return;
 			}
 
-			//if (updateLineOnly == false)
-			//{
-			// Run parser to highlight keywords
 			inputHighlightText.text = SyntaxHighlightContent(newText);
-			//}
-			//else
-			//{
-			//    // Get the caret position
-			//    int editIndex = inputField.stringPosition;
 
-			//    // Get the current line
-			//    TMP_LineInfo line = inputText.textInfo.lineInfo[currentLine];
-
-			//    int start = line.firstCharacterIndex;
-			//    int length = line.characterCount;
-
-			//    // Get the substring
-			//    string workingString = newText.Substring(start, length);
-
-			//    // Run the parser on the line
-			//    string highlightedWorkingString = SyntaxHighlightContent(workingString);
-
-			//    // Insert the highlighted text
-			//    inputHighlightText.text = inputHighlightText.text.Remove(start, length - 1);
-			//    inputHighlightText.text = inputHighlightText.text.Insert(start, highlightedWorkingString);
-			//}
-
-			// Autohide scrollbar
+			// Auto hide scrollbar
 			bool showScrollbar = inputField.verticalScrollbar.size < 1f;
 
 			// Show the scrollbar
 			inputField.verticalScrollbar.gameObject.SetActive(showScrollbar);
-
 
 			// Sync line numbers and update the line highlight
 			UpdateCurrentLineNumbers();
@@ -657,7 +631,7 @@ namespace InGameCodeEditor
 				// Add the opening color tag
 				highlightedBuilder.Append(match.htmlColor);
 
-				// Copy text inbetween the match boundaries
+				// Copy text in between the match boundaries
 				for (int i = match.startIndex; i < match.endIndex; i++)
 					highlightedBuilder.Append(inputText[i]);
 
@@ -674,6 +648,8 @@ namespace InGameCodeEditor
 
 			// Convert to string
 			inputText = highlightedBuilder.ToString();
+
+			Debug.Log($"Highlight: {inputText}");
 
 			return inputText;
 		}
@@ -735,7 +711,8 @@ namespace InGameCodeEditor
 
 				for (int i = inputField.caretPosition + 1; i < inputField.text.Length; i++)
 				{
-					if (inputField.text[i] == languageTheme.autoIndent.indentDecreaseCharacter)
+					if (inputField.text[i] == languageTheme.autoIndent.indentDecreaseCharacter
+						&& languageTheme.autoIndent.legacyAutoIndent)
 					{
 						// Set the closing flag
 						immediateClosing = true;

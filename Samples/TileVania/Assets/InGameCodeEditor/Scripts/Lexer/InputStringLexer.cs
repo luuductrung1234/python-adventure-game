@@ -5,7 +5,6 @@ namespace InGameCodeEditor.Lexer
 {
 	internal struct InputStringMatchInfo
 	{
-		// Public
 		public int startIndex;
 		public int endIndex;
 		public string htmlColor;
@@ -16,8 +15,8 @@ namespace InGameCodeEditor.Lexer
 		// Private
 		private string inputString = null;
 		private MatchLexer[] matchers = null;
-		private HashSet<char> specialStartSymbols = new HashSet<char>();
-		private HashSet<char> specialEndSymbols = new HashSet<char>();
+		private readonly HashSet<char> specialStartSymbols = new();
+		private readonly HashSet<char> specialEndSymbols = new();
 		private char current = ' ';
 		private char previous = ' ';
 		private int currentIndex = 0;
@@ -79,16 +78,12 @@ namespace InGameCodeEditor.Lexer
 
 		public IEnumerable<InputStringMatchInfo> LexInputString(string input)
 		{
-			// Dont allow null
-			if (input == null)
-				throw new ArgumentNullException("input");
-
 			// Check for no matchers
 			if (matchers == null || matchers.Length == 0)
 				yield break;
 
 			// Store the input string
-			this.inputString = input;
+			this.inputString = input ?? throw new ArgumentNullException("input");
 			this.current = ' ';
 			this.previous = ' ';
 			this.currentIndex = 0;
@@ -141,6 +136,10 @@ namespace InGameCodeEditor.Lexer
 			}
 		}
 
+		/// <summary>
+		/// Read single character at <see cref="currentLookaheadIndex"/>
+		/// </summary>
+		/// <returns></returns>
 		public char ReadNext()
 		{
 			// Check for end of stream
@@ -157,6 +156,10 @@ namespace InGameCodeEditor.Lexer
 			return current;
 		}
 
+		/// <summary>
+		/// Rollback for both <see cref="currentLookaheadIndex"/> and <see cref="previous"/>
+		/// </summary>
+		/// <param name="amount"></param>
 		public void Rollback(int amount = -1)
 		{
 			if (amount == -1)
@@ -173,13 +176,16 @@ namespace InGameCodeEditor.Lexer
 			int previousIndex = currentLookaheadIndex - 1;
 
 			if (previousIndex >= inputString.Length)
-				previous = inputString[inputString.Length - 1];
+				previous = inputString[^1];
 			else if (previousIndex >= 0)
 				previous = inputString[previousIndex];
 			else
 				previous = ' ';
 		}
 
+		/// <summary>
+		/// Sync <see cref="currentIndex"/> with <see cref="currentLookaheadIndex"/>
+		/// </summary>
 		public void Commit()
 		{
 			currentIndex = currentLookaheadIndex;
@@ -193,6 +199,9 @@ namespace InGameCodeEditor.Lexer
 			return specialEndSymbols.Contains(character);
 		}
 
+		/// <summary>
+		/// Skip all white space from current index
+		/// </summary>
 		private void ReadWhiteSpace()
 		{
 			// Read until white space

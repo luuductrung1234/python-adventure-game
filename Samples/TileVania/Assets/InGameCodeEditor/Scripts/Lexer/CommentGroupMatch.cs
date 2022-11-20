@@ -38,11 +38,11 @@ namespace InGameCodeEditor.Lexer
 		public Color highlightColor = Color.black;
 
 		[Tooltip("Should line comments be matched before block comments")]
-		public bool lineCommentHasPresedence = true;
+		public bool lineCommentHasPrecedence = true;
 
 		// Properties
 		/// <summary>
-		/// Retrusn a value indicating whether any comment highlighting is enabled.
+		/// Returns a value indicating whether any comment highlighting is enabled.
 		/// A valid line or block comment start string must be specified in order for comment highlighting to be enabled.
 		/// </summary>
 		public bool HasCommentHighlighting
@@ -62,9 +62,7 @@ namespace InGameCodeEditor.Lexer
 			get
 			{
 				// Build html color string
-				if (htmlColor == null)
-					htmlColor = "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
-
+				htmlColor ??= "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
 				return htmlColor;
 			}
 		}
@@ -92,14 +90,14 @@ namespace InGameCodeEditor.Lexer
 			get
 			{
 				if (string.IsNullOrEmpty(blockCommentEnd) == false)
-					yield return blockCommentEnd[blockCommentEnd.Length - 1];
+					yield return blockCommentEnd[^1];
 			}
 		}
 
 		// Methods
 		/// <summary>
 		/// Causes the cached values to be reloaded.
-		/// Useful for editor visualisation.
+		/// Useful for editor visualization.
 		/// </summary>
 		public override void Invalidate()
 		{
@@ -113,7 +111,7 @@ namespace InGameCodeEditor.Lexer
 		/// <returns>True if a comment was found or false if not</returns>
 		public override bool IsImplicitMatch(ILexer lexer)
 		{
-			if (lineCommentHasPresedence == true)
+			if (lineCommentHasPrecedence == true)
 			{
 				// Parse line comments then block comments
 				if (IsLineCommentMatch(lexer) == true ||
@@ -122,7 +120,7 @@ namespace InGameCodeEditor.Lexer
 			}
 			else
 			{
-				// Parse block comments then line coments
+				// Parse block comments then line comments
 				if (IsBlockCommentMatch(lexer) == true ||
 						IsLineCommentMatch(lexer) == true)
 					return true;

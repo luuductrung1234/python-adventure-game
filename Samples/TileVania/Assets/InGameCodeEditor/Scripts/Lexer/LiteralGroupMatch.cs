@@ -19,12 +19,12 @@ namespace InGameCodeEditor.Lexer
 		/// Should literal be highlighted.
 		/// When true, any text surrounded by double quotes will be highlighted.
 		/// </summary>
-		[Tooltip("Should literals inside quotes be highlghted")]
+		[Tooltip("Should literals inside quotes be highlighted")]
 		public bool highlightLiterals = true;
 		/// <summary>
 		/// The color that any matched literals will be highlighted.
 		/// </summary>
-		[Tooltip("The color that all literal strings will be highglighted with")]
+		[Tooltip("The color that all literal strings will be highlighted with")]
 		public Color highlightColor = Color.black;
 
 		// Properties
@@ -43,9 +43,7 @@ namespace InGameCodeEditor.Lexer
 		{
 			get
 			{
-				if (htmlColor == null)
-					htmlColor = "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
-
+				htmlColor ??= "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
 				return htmlColor;
 			}
 		}

@@ -42,9 +42,7 @@ namespace InGameCodeEditor.Lexer
 		{
 			get
 			{
-				if (htmlColor == null)
-					htmlColor = "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
-
+				htmlColor ??= "<#" + ColorUtility.ToHtmlStringRGB(highlightColor) + ">";
 				return htmlColor;
 			}
 		}
