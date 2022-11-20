@@ -10,6 +10,10 @@ public class Room1Quizzes : MonoBehaviour
 
     public int[] correctAns = {1, 4};
 
+    /// quiz for room 2 as well
+    public int currentQuiz2 = 0;
+    public string[] correctAns2 = {"int(x)"};
+
     public void Proceed(){
         GameObject.Find("Border_r1").SetActive(false);
     }

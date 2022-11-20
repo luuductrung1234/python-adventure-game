@@ -23,19 +23,23 @@ public class PlayerController : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
+    private void Update(){
+        if (gameController.walkEnable){
+            Walk();
+        }
+    }
 
-    private void LateUpdate() {
-        Walk();
-        PLayerJump();
+    private void LateUpdate(){
+        if (gameController.walkEnable){
+            PLayerJump();
+        }
     }
 
 
     private void Walk(){
-        if(gameController.walkEnable){
-            moveX = Input.GetAxisRaw("Horizontal");
-            transform.position += new Vector3(moveX, 0f, 0f)*Time.deltaTime*speed;
-            Animate();
-        }
+        moveX = Input.GetAxisRaw("Horizontal");
+        transform.position += new Vector3(moveX, 0f, 0f)*Time.deltaTime*speed;
+        Animate();
     }
 
     private void Animate(){
