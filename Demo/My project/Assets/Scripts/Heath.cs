@@ -48,7 +48,12 @@ public class Heath : MonoBehaviour
         currentHealth -= 1;
         if (currentHealth <= 0){
             currentHealth = 0;
-            gameController.isGameOver = true;
+            gameController.walkEnable = false;
+            gameController.canInteract = false;
+        }
+        else{
+            gameController.walkEnable = true;
+            gameController.canInteract = true;
         }
         StartCoroutine(Shake());
 

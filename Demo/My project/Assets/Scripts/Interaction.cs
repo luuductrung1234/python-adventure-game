@@ -52,8 +52,6 @@ public class Interaction : MonoBehaviour
         
     }
 
-
-
     private void CheckAnswer(){
         if (isCollide){
             if (Input.GetKeyDown(KeyCode.E) && myQuiz.currentQuiz < 3){

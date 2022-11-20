@@ -24,15 +24,6 @@ public class GameController : MonoBehaviour
         isFreezeCam = false;
     }
 
-    private void LateUpdate(){
-        if (isGameOver){
-            walkEnable = false;
-            canInteract = false;
-        }else{
-            walkEnable = true;
-            canInteract = true;
-        }
-    }
 
     public void GameRestart(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
