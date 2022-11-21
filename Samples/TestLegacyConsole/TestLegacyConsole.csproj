@@ -40,21 +40,27 @@
         <Reference Include="System.Data" />
         <Reference Include="System.Xml" />
         <Reference Include="IronPython">
+            <HintPath>../../Libs/IronPython.dll</HintPath>
             <HintPath>/Library/Frameworks/Mono.framework/Libraries/ironpython/IronPython.dll</HintPath>
         </Reference>
         <Reference Include="IronPython.Modules">
+            <HintPath>../../Libs/IronPython.Modules.dll</HintPath>
             <HintPath>/Library/Frameworks/Mono.framework/Libraries/ironpython/IronPython.Modules.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.Dynamic">
+            <HintPath>../../Libs/Microsoft.Dynamic.dll</HintPath>
             <HintPath>/Library/Frameworks/Mono.framework/Libraries/ironpython/Microsoft.Dynamic.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.Scripting.AspNet">
+            <HintPath>../../Libs/Microsoft.Scripting.AspNet.dll</HintPath>
             <HintPath>/Library/Frameworks/Mono.framework/Libraries/ironpython/Microsoft.Scripting.AspNet.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.Scripting.Metadata">
+            <HintPath>../../Libs/Microsoft.Scripting.Metadata.dll</HintPath>
             <HintPath>/Library/Frameworks/Mono.framework/Libraries/ironpython/Microsoft.Scripting.Metadata.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.Scripting">
+            <HintPath>../../Libs/Microsoft.Scripting.dll</HintPath>
             <HintPath>/Library/Frameworks/Mono.framework/Libraries/ironpython/Microsoft.Scripting.dll</HintPath>
         </Reference>
     </ItemGroup>
