@@ -46,3 +46,21 @@
 20. [ScriptableObject](https://docs.unity3d.com/ScriptReference/ScriptableObject.html) helps to create objects that don't need to be attached to any game objects. It is most useful for assets which are only meant to store data.
 21. Change sprite of GameObject using [Image.sprite](https://docs.unity3d.com/2019.1/Documentation/ScriptReference/UI.Image-sprite.html).
 22. Use [SceneManager.LoadScene](https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.LoadScene.html) to load specific scene (usually apply to perform replay a game).
+
+## ironpython
+
+[IronPython 2](https://github.com/IronLanguages/ironpython2), [IronPython 3](https://github.com/IronLanguages/ironpython3)
+
+- [IronPython and Unity](https://shrigsoc.blogspot.com/2016/07/ironpython-and-unity.html). To find needed dlls, first, install IronPython. Then looking for install location on your machine:
+  - macos: `/Library/Frameworks/Mono.framework/Versions/Current/lib/ironpython`
+  - window: `C:\Program Files (x86)\IronPython {version}\Lib`
+- [Use the _dynamic_ keyword/.NET 4.6 feature in Unity](https://stackoverflow.com/questions/45616562/use-the-dynamic-keyword-net-4-6-feature-in-unity)
+- The heart of IronPython and any other dynamic languages that run on .NET platform is the [Dynamic Language Runtime (DLR)](https://github.com/IronLanguages/dlr) - [overview](https://learn.microsoft.com/en-us/dotnet/framework/reflection-and-codedom/dynamic-language-runtime-overview#dlr-documentation) - [architecture](https://learn.microsoft.com/en-us/dotnet/framework/reflection-and-codedom/dynamic-language-runtime-overview#dlr-architecture) - [documentation](https://github.com/IronLanguages/dlr/tree/master/Docs). DLR adds a set of services on top of CLR for better supporting dynamic languages, includes
+  - [Expression Trees](https://github.com/IronLanguages/dlr/blob/master/Docs/expr-tree-spec.pdf)
+  - Call site caching
+  - Dynamic ObjectInteroperability.
+
+### further read
+
+- [Expression Tree (C#)](https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/expression-trees/)
+- [Difference between **design-time** and **runtime** framework](https://stackoverflow.com/questions/4787406/difference-between-design-time-and-runtime-framework)
