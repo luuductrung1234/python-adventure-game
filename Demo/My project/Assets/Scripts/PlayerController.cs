@@ -61,11 +61,13 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isOnGround){
             isOnGround = false;
             myBody.AddForce(new Vector2(0f, jumpFroces), ForceMode2D.Impulse);
+            anim.SetBool("Jump", true);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Trap")){
             isOnGround = true;
+            anim.SetBool("Jump", false);
         }
     }
 
