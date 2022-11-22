@@ -4,7 +4,7 @@ using TokenKind = IronPython.Compiler.TokenKind;
 
 namespace IronPython.Custom
 {
-	public readonly struct TokenWithSpan
+	public class TokenWithSpan
 	{
 		public TokenWithSpan(Token token, IndexSpan span, SourceLocation location)
 		{
@@ -12,7 +12,7 @@ namespace IronPython.Custom
 			Span = span;
 			Location = location;
 			ErrorMessage = token.Kind == TokenKind.Error ? ((ErrorToken)token).Message : null;
-			AdvancedTokenKind = null;
+			AdvancedTokenKind = Custom.AdvancedTokenKind.Unspecified;
 		}
 
 		public TokenWithSpan(Token token, IndexSpan span, SourceLocation location, AdvancedTokenKind advancedTokenKind)
@@ -27,7 +27,10 @@ namespace IronPython.Custom
 		public IndexSpan Span { get; }
 		public SourceLocation Location { get; }
 		public Token Token { get; }
-		public AdvancedTokenKind? AdvancedTokenKind { get; }
+		public AdvancedTokenKind AdvancedTokenKind { get; private set; }
 		public string ErrorMessage { get; }
+
+		public void SetAdvancedTokenKind(AdvancedTokenKind kind)
+				=> AdvancedTokenKind = kind;
 	}
 }

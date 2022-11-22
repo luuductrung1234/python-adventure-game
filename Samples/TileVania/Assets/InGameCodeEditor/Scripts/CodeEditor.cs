@@ -663,8 +663,6 @@ namespace InGameCodeEditor
 				myPython.AnalyzeScript(inputText);
 				foreach (var token in myPython.Tokens.OrderByDescending(t => t.Location.Index))
 				{
-					Debug.Log($"Match token kind {token.Token.Kind}");
-
 					var startingTag = string.Empty;
 					var closingTag = string.Empty;
 

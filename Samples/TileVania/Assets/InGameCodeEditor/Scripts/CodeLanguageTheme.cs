@@ -137,9 +137,11 @@ namespace InGameCodeEditor
 
 		internal TokenColor GetTokenColor(TokenWithSpan token)
 		{
-			var tokenColor = this.tokenColors.FirstOrDefault(tc => token.AdvancedTokenKind.HasValue && tc.advancedTokenKinds.Contains(token.AdvancedTokenKind.Value))
+			var tokenColor = this.tokenColors.FirstOrDefault(tc => tc.advancedTokenKinds.Contains(token.AdvancedTokenKind))
 				?? this.tokenColors.FirstOrDefault(tc => tc.tokenKinds.Contains(token.Token.Kind))
 				?? this.tokenColors.FirstOrDefault(tc => tc.tokenRange.fromKind <= token.Token.Kind && tc.tokenRange.toKind >= token.Token.Kind);
+
+			Debug.Log($"Match token kind {token.Token.Kind}:{token.AdvancedTokenKind} with color name {tokenColor.name}");
 			return tokenColor;
 		}
 

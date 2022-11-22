@@ -37,12 +37,12 @@ namespace IronPython.Custom
         }
 
         /// <summary>
-        /// 
+        /// Break sourcecode into tokens (with useful information)
         /// </summary>
         /// <param name="eng"></param>
         /// <param name="sourceCode"></param>
         /// <returns></returns>
-        public static List<TokenWithSpan> Tokenize(this ScriptEngine eng, string sourceCode)
+        public static List<TokenWithSpan> Tokenize(this ScriptEngine eng, string sourceCode, SuiteStatement suiteStatement)
         {
             var tokenizer = eng.GetTokenizer(sourceCode);
             var tokens = new List<TokenWithSpan>();
@@ -59,6 +59,7 @@ namespace IronPython.Custom
                         continue;
                     }
 
+                    CheckAdvancedTokenKind(currentToken, suiteStatement);
                     tokens.Add(currentToken);
                     currentToken = tokenizer.NextToken();
                 }
@@ -68,15 +69,41 @@ namespace IronPython.Custom
                 tokens.Add(ex.ToToken(tokenizer));
             }
 
-            // TODO: fix parsing comment token
-            foreach (var commentIndex in sourceCode.IndexesOf('#'))
+            //fix parsing comment token
+            var lines = tokenizer.GetLineLocations().OrderBy(l => l).ToList();
+            foreach (var commentSymbolIndex in sourceCode.IndexesOf('#'))
             {
-                var location = tokenizer.IndexToLocation(commentIndex);
+                var nextLineIndex = lines.FirstOrDefault(l => commentSymbolIndex < l);
+                var comment = sourceCode.Substring(commentSymbolIndex, nextLineIndex - commentSymbolIndex - 1);
+                var location = tokenizer.IndexToLocation(commentSymbolIndex);
+                var span = new IndexSpan(commentSymbolIndex, comment.Length);
+                var token = new CommentToken(comment);
+                tokens.Add(new TokenWithSpan(token, span, location));
             }
-            
-            // TODO: implement logic for AdvancedTokenKind
 
             return tokens;
+        }
+
+        private static TokenWithSpan CheckAdvancedTokenKind(TokenWithSpan token, SuiteStatement suiteStatement)
+        {
+            // TODO: implement logic for AdvancedTokenKind
+            switch (token.Token.Kind)
+            {
+                case TokenKind.Constant:
+                    var firstChar = token.Token.Image[0].ToString();
+                    var lastChar = token.Token.Image[token.Token.Image.Length - 1].ToString();
+                    if (!int.TryParse(firstChar, out _) || !int.TryParse(lastChar, out _))
+                        return token;
+                    var image = token.Token.Image.Replace("_", "");
+                    token.SetAdvancedTokenKind(double.TryParse(image, out _)
+                        ? AdvancedTokenKind.Number
+                        : AdvancedTokenKind.Unspecified);
+                    break;
+                case TokenKind.Name:
+                    break;
+            }
+
+            return token;
         }
 
         public static TokenWithSpan ToToken(this SyntaxErrorException ex, Tokenizer tokenizer)

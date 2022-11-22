@@ -35,10 +35,7 @@ namespace IronPython.Custom
             Logging($"Analyze {sourceCode}");
             CachedSourceCode = sourceCode;
 
-            Tokens = Engine.Tokenize(sourceCode);
-            if (Tokens == null)
-                throw new InvalidOperationException("Fail to tokenize source code");
-
+            TokenWithSpan errorToken = null;
             try
             {
                 var ast = Engine.GenerateAst(sourceCode);
@@ -53,13 +50,19 @@ namespace IronPython.Custom
                               $"- End[{ex.RawSpan.End.Line}:{ex.RawSpan.End.Column}] " +
                               $"Value[{value}] Message[{ex.Message}]";
                 Logging(message);
-                var errorToken = ex.ToToken(Engine.GetTokenizer(CachedSourceCode));
-                var tokenNotInErrorRange = Tokens.Where(token =>
-                    (errorToken.Span.Start > token.Span.Start || errorToken.Span.End < token.Span.Start) &&
-                    (errorToken.Span.Start > token.Span.End || errorToken.Span.End < token.Span.End)).ToList();
-                tokenNotInErrorRange.Add(errorToken);
-                Tokens = tokenNotInErrorRange;
+                errorToken = ex.ToToken(Engine.GetTokenizer(CachedSourceCode));
             }
+
+            Tokens = Engine.Tokenize(sourceCode, Body);
+            if (Tokens == null)
+                throw new InvalidOperationException("Fail to tokenize source code");
+
+            if (errorToken == null) return;
+            var tokenNotInErrorRange = Tokens.Where(token =>
+                (errorToken.Span.Start > token.Span.Start || errorToken.Span.End < token.Span.Start) &&
+                (errorToken.Span.Start > token.Span.End || errorToken.Span.End < token.Span.End)).ToList();
+            tokenNotInErrorRange.Add(errorToken);
+            Tokens = tokenNotInErrorRange;
         }
 
         public ScriptScope RunScript()
