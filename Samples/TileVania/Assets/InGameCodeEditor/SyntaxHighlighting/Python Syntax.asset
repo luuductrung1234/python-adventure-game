@@ -13,6 +13,72 @@ MonoBehaviour:
   m_Name: Python Syntax
   m_EditorClassIdentifier: 
   languageName: Python
+  enableLegacyMatcher: 0
+  tokenColors:
+  - name: Comment
+    advancedTokenKinds: 
+    tokenKinds: 04000000
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.40392157, g: 0.43529412, b: 0.49019608, a: 1}
+  - name: Name
+    advancedTokenKinds: 
+    tokenKinds: 08000000
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.59607846, g: 0.7647059, b: 0.4745098, a: 1}
+  - name: Constant
+    advancedTokenKinds: 
+    tokenKinds: 09000000
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.8980392, g: 0.7529412, b: 0.48235294, a: 1}
+  - name: Operator
+    advancedTokenKinds: 
+    tokenKinds: 
+    tokenRange:
+      fromKind: 32
+      toKind: 75
+    colorSettings:
+      foreground: {r: 0.8784314, g: 0.42352942, b: 0.45882353, a: 1}
+  - name: Keyword
+    advancedTokenKinds: 
+    tokenKinds: 
+    tokenRange:
+      fromKind: 76
+      toKind: 106
+    colorSettings:
+      foreground: {r: 0.8784314, g: 0.42352942, b: 0.45882353, a: 1}
+  - name: KeywordDef
+    advancedTokenKinds: 
+    tokenKinds: 51000000
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.3372549, g: 0.7137255, b: 0.7607843, a: 1}
+  - name: KeywordParenthesis
+    advancedTokenKinds: 
+    tokenKinds: 3f00000040000000
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 1, g: 0.8156863, b: 0.039215688, a: 1}
+  - name: KeywordColon
+    advancedTokenKinds: 
+    tokenKinds: 46000000
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.68235296, g: 0.68235296, b: 0.68235296, a: 1}
   delimiterSymbols: '[ ] ( ) { } ; : , .'
   keywordGroups:
   - group: Keyword Group
@@ -39,7 +105,7 @@ MonoBehaviour:
     blockCommentStart: /*
     blockCommentEnd: '*/'
     highlightColor: {r: 0.40392157, g: 0.43529412, b: 0.49019608, a: 1}
-    lineCommentHasPresedence: 1
+    lineCommentHasPrecedence: 1
   literalGroup:
     highlightLiterals: 1
     highlightColor: {r: 0.8980392, g: 0.7529412, b: 0.48235294, a: 1}

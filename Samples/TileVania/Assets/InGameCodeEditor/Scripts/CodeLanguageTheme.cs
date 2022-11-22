@@ -1,6 +1,9 @@
 ﻿using InGameCodeEditor.Lexer;
+using IronPython.Compiler;
+using IronPython.Custom;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -22,11 +25,22 @@ namespace InGameCodeEditor
 		[NonSerialized]
 		private MatchLexer[] matchers = null;
 
+		[Header("General")]
 		// Public        
 		/// <summary>
 		/// The name of the language that this theme provides syntax highlighting for. For example: 'C#'.
 		/// </summary>
 		public string languageName;
+
+		[Tooltip("This is selectively parsing and highlighting source code using modern or legacy technique")]
+		public bool enableLegacyMatcher = true;
+
+		[Header("Indentation")]
+		public TokenColor[] tokenColors;
+
+		#region Legacy Matchers
+
+		[Header("Legacy Matchers")]
 		/// <summary>
 		/// A string containing special characters separated by a space that can act as delimiter symbols when they appear before or after a keyword.
 		/// Only single characters are allowed and must be separated by a space if multiple symbols need to be specified.
@@ -34,6 +48,7 @@ namespace InGameCodeEditor
 		[TextArea]
 		[Tooltip("Any special characters that can act as delimiters when they are immediately before or after a keyword. Single characters only separated by a space")]
 		public string delimiterSymbols;
+
 		/// <summary>
 		/// An array of keyword groups used to specify which words should be highlighted.
 		/// </summary>
@@ -54,6 +69,10 @@ namespace InGameCodeEditor
 		/// A literal group used to specify whether quote strings should be highlighted.
 		/// </summary>
 		public LiteralGroupMatch literalGroup;
+
+		#endregion Legacy Matchers
+
+		[Header("Indentation")]
 		/// <summary>
 		/// Options group for all auto indent related settings.
 		/// </summary>
@@ -114,6 +133,14 @@ namespace InGameCodeEditor
 				}
 				return matchers;
 			}
+		}
+
+		internal TokenColor GetTokenColor(TokenWithSpan token)
+		{
+			var tokenColor = this.tokenColors.FirstOrDefault(tc => token.AdvancedTokenKind.HasValue && tc.advancedTokenKinds.Contains(token.AdvancedTokenKind.Value))
+				?? this.tokenColors.FirstOrDefault(tc => tc.tokenKinds.Contains(token.Token.Kind))
+				?? this.tokenColors.FirstOrDefault(tc => tc.tokenRange.fromKind <= token.Token.Kind && tc.tokenRange.toKind >= token.Token.Kind);
+			return tokenColor;
 		}
 
 		// Methods

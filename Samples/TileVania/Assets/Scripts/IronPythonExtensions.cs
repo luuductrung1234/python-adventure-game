@@ -44,6 +44,62 @@ namespace IronPython.Custom
         /// <returns></returns>
         public static List<TokenWithSpan> Tokenize(this ScriptEngine eng, string sourceCode)
         {
+            var tokenizer = eng.GetTokenizer(sourceCode);
+            var tokens = new List<TokenWithSpan>();
+            try
+            {
+                var currentToken = tokenizer.NextToken();
+                while (true)
+                {
+                    if (currentToken.Token.Kind == TokenKind.EndOfFile)
+                        break;
+                    if (currentToken.Token.Kind is TokenKind.NewLine or TokenKind.NLToken)
+                    {
+                        currentToken = tokenizer.NextToken();
+                        continue;
+                    }
+
+                    tokens.Add(currentToken);
+                    currentToken = tokenizer.NextToken();
+                }
+            }
+            catch (SyntaxErrorException ex)
+            {
+                tokens.Add(ex.ToToken(tokenizer));
+            }
+
+            // TODO: fix parsing comment token
+            foreach (var commentIndex in sourceCode.IndexesOf('#'))
+            {
+                var location = tokenizer.IndexToLocation(commentIndex);
+            }
+            
+            // TODO: implement logic for AdvancedTokenKind
+
+            return tokens;
+        }
+
+        public static TokenWithSpan ToToken(this SyntaxErrorException ex, Tokenizer tokenizer)
+        {
+            var span = new IndexSpan(ex.RawSpan.Start.Index, ex.RawSpan.Length);
+            var value = ex.SourceCode.Substring(ex.RawSpan.Start.Index, ex.RawSpan.Length);
+            var message = $"Error[{ex.ErrorCode}] Start[{ex.RawSpan.Start.Line}:{ex.RawSpan.Start.Column}] " +
+                          $"- End[{ex.RawSpan.End.Line}:{ex.RawSpan.End.Column}] " +
+                          $"Value[{value}] Message[{ex.Message}]";
+            var token = new ErrorToken(message);
+            return new TokenWithSpan(token, span, tokenizer.IndexToLocation(span.Start));
+        }
+
+        public static TokenWithSpan NextToken(this Tokenizer tokenizer)
+        {
+            var token = tokenizer.GetNextToken();
+            var span = tokenizer.TokenSpan;
+            var location = tokenizer.IndexToLocation(span.Start);
+            return new TokenWithSpan(token, span, location);
+        }
+
+        public static Tokenizer GetTokenizer(this ScriptEngine eng, string sourceCode)
+        {
             var languageContext = eng.TryGetLanguageContext();
             var compilerContext = languageContext.GetCompilerContext(sourceCode);
             var compilerOptions = compilerContext.Options as PythonCompilerOptions;
@@ -67,32 +123,7 @@ namespace IronPython.Custom
 
             var tokenizer = new Tokenizer(compilerContext.Errors, compilerOptions);
             tokenizer.Initialize(null, reader, compilerContext.SourceUnit, SourceLocation.MinValue);
-            
-            var tokens = new List<TokenWithSpan>();
-            var currentToken = tokenizer.NextToken();
-            while (true)
-            {
-                if (currentToken.Token.Kind == TokenKind.EndOfFile)
-                    break;
-                if (currentToken.Token.Kind is TokenKind.NewLine or TokenKind.NLToken)
-                {
-                    currentToken = tokenizer.NextToken();
-                    continue;
-                }
-
-                tokens.Add(currentToken);
-                currentToken = tokenizer.NextToken();
-            }
-
-            return tokens;
-        }
-
-        public static TokenWithSpan NextToken(this Tokenizer tokenizer)
-        {
-            var token = tokenizer.GetNextToken();
-            var span = tokenizer.TokenSpan;
-            var location = tokenizer.IndexToLocation(span.Start);
-            return new TokenWithSpan(token, span, location);
+            return tokenizer;
         }
 
         public static CompilerContext GetCompilerContext(this LanguageContext languageContext, string sourceCode)

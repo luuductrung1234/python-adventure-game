@@ -10,10 +10,14 @@ namespace TestLegacyConsole
             var sourceCode = @"
 import sys
 import System
+# just to test how comment token look like
+someText = 'abcXYZ'
+greetingCallCount = 0	# I have some comment here
 
-greetingCallCount = 0
+# just to test how comment token look like
 
 def greetings(name):
+	'''note something about this method'''
 	global greetingCallCount
 	greetingCallCount = greetingCallCount + 1
 	if System.String.IsNullOrEmpty(name.title()):
@@ -21,6 +25,10 @@ def greetings(name):
 	return 'Hello ' + name.title() + '! [' + str(greetingCallCount) + ']'
 
 def get_sys_info_list():
+	'''
+	this is how multiple line docstring
+	look like
+	'''
 	return [
 		str(sys.modules), 
 		str(sys.path), 
@@ -37,7 +45,7 @@ def get_sys_info_dict():
 	}
 ";
             var myPython = new MyPython(Console.WriteLine);
-            myPython.PlayingAround(sourceCode);
+            myPython.SampleUsage(sourceCode);
         }
     }
 }

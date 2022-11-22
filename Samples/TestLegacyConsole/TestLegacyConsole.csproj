@@ -65,6 +65,12 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="..\TileVania\Assets\Scripts\AdvancedTokenKind.cs">
+          <Link>IronPython\Custom\AdvancedTokenKind.cs</Link>
+        </Compile>
+        <Compile Include="..\TileVania\Assets\Scripts\HelperExtensions.cs">
+          <Link>IronPython\Custom\HelperExtensions.cs</Link>
+        </Compile>
         <Compile Include="..\TileVania\Assets\Scripts\IronPythonExtensions.cs">
           <Link>IronPython\Custom\IronPythonExtensions.cs</Link>
         </Compile>

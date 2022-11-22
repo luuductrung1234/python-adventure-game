@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using IronPython.Compiler.Ast;
 using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
+using TokenKind = IronPython.Compiler.TokenKind;
 
 namespace IronPython.Custom
 {
@@ -18,39 +20,51 @@ namespace IronPython.Custom
 
         public ScriptEngine Engine { get; }
         public Action<object> Logging { get; }
+        public SuiteStatement Body { get; private set; }
+        public List<TokenWithSpan> Tokens { get; private set; }
+        public string CachedSourceCode { get; private set; }
 
-        public void PlayingAround(string sourceCode)
+        public void SampleUsage(string sourceCode)
         {
-            //RunScript(sourceCode);
             AnalyzeScript(sourceCode);
+            RunScript();
         }
 
         public void AnalyzeScript(string sourceCode)
         {
+            Logging($"Analyze {sourceCode}");
+            CachedSourceCode = sourceCode;
+
+            Tokens = Engine.Tokenize(sourceCode);
+            if (Tokens == null)
+                throw new InvalidOperationException("Fail to tokenize source code");
+
             try
             {
                 var ast = Engine.GenerateAst(sourceCode);
                 if (ast == null)
                     throw new InvalidOperationException("Fail to generate IronPython Abstract Syntax Tree (AST)");
-                var body = (SuiteStatement)ast.Body;
-
-                var tokens = Engine.Tokenize(sourceCode);
-                if (tokens == null)
-                    throw new InvalidOperationException("Fail to tokenize source code");
+                Body = (SuiteStatement)ast.Body;
             }
             catch (SyntaxErrorException ex)
             {
-                var token = ex.SourceCode.Substring(ex.RawSpan.Start.Index, ex.RawSpan.Length);
-                Logging($"ErrorCode[{ex.ErrorCode}] Start[{ex.RawSpan.Start.Line}:{ex.RawSpan.Start.Column}] " +
-                        $"- End[{ex.RawSpan.End.Line}:{ex.RawSpan.End.Column}] " +
-                        $@"InCode[{token}] Message[{ex.Message}]");
-                // TODO: should return instance of ErrorInfo
+                var value = ex.SourceCode.Substring(ex.RawSpan.Start.Index, ex.RawSpan.Length);
+                var message = $"Error[{ex.ErrorCode}] Start[{ex.RawSpan.Start.Line}:{ex.RawSpan.Start.Column}] " +
+                              $"- End[{ex.RawSpan.End.Line}:{ex.RawSpan.End.Column}] " +
+                              $"Value[{value}] Message[{ex.Message}]";
+                Logging(message);
+                var errorToken = ex.ToToken(Engine.GetTokenizer(CachedSourceCode));
+                var tokenNotInErrorRange = Tokens.Where(token =>
+                    (errorToken.Span.Start > token.Span.Start || errorToken.Span.End < token.Span.Start) &&
+                    (errorToken.Span.Start > token.Span.End || errorToken.Span.End < token.Span.End)).ToList();
+                tokenNotInErrorRange.Add(errorToken);
+                Tokens = tokenNotInErrorRange;
             }
         }
 
-        public ScriptScope RunScript(string sourceCode)
+        public ScriptScope RunScript()
         {
-            var (source, scope) = Engine.Prepare(sourceCode);
+            var (source, scope) = Engine.Prepare(CachedSourceCode);
 
             try
             {
@@ -79,14 +93,14 @@ namespace IronPython.Custom
                 Logging($"Found item (in scope): {item.Key}");
             }
 
-            var isExist = scope.TryGetVariable("greetings", out dynamic greetings);
+            var isExist = scope.TryGetVariable("greetings", out var greetings);
             if (isExist)
             {
                 Logging(greetings(""));
                 Logging(greetings("World"));
             }
 
-            isExist = scope.TryGetVariable("get_sys_info_list", out dynamic showSysInfoList);
+            isExist = scope.TryGetVariable("get_sys_info_list", out var showSysInfoList);
             if (isExist)
             {
                 var infoList = (List)showSysInfoList();
@@ -97,7 +111,7 @@ namespace IronPython.Custom
                 }
             }
 
-            isExist = scope.TryGetVariable("get_sys_info_dict", out dynamic showSysInfoDict);
+            isExist = scope.TryGetVariable("get_sys_info_dict", out var showSysInfoDict);
             if (!isExist) return;
             var infoDict = (PythonDictionary)showSysInfoDict();
             foreach (var entry in infoDict)

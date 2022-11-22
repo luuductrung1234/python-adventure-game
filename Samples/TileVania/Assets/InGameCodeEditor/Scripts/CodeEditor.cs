@@ -4,6 +4,9 @@ using TMPro;
 using System.Text;
 using InGameCodeEditor.Lexer;
 using System.Reflection;
+using IronPython.Custom;
+using System.Linq;
+using IronPython.Compiler;
 
 namespace InGameCodeEditor
 {
@@ -17,6 +20,7 @@ namespace InGameCodeEditor
 		private static StringBuilder highlightedBuilder = new StringBuilder(4096);
 		private static StringBuilder lineBuilder = new StringBuilder();
 		private static MethodInfo scrollBarUpdateFix = null;
+		private static readonly MyPython myPython = new((object message) => Debug.Log(message));
 
 		private InputStringLexer lexer = new InputStringLexer();
 		private RectTransform inputTextTransform = null;
@@ -617,41 +621,79 @@ namespace InGameCodeEditor
 			if (editorTheme != null && editorTheme.allowSyntaxHighlighting == false)
 				return inputText;
 
-			const string closingTag = "</color>";
-			int offset = 0;
-
-			highlightedBuilder.Length = 0;
-
-			foreach (InputStringMatchInfo match in lexer.LexInputString(inputText))
+			if (languageTheme.enableLegacyMatcher)
 			{
-				// Copy text before the match
-				for (int i = offset; i < match.startIndex; i++)
+				int offset = 0;
+
+				highlightedBuilder.Length = 0;
+
+				foreach (InputStringMatchInfo match in lexer.LexInputString(inputText))
+				{
+					// Copy text before the match
+					for (int i = offset; i < match.startIndex; i++)
+						highlightedBuilder.Append(inputText[i]);
+
+					// Add the opening color tag
+					highlightedBuilder.Append(match.htmlColor);
+
+					// Copy text in between the match boundaries
+					for (int i = match.startIndex; i < match.endIndex; i++)
+						highlightedBuilder.Append(inputText[i]);
+
+					// Add the closing color tag
+					highlightedBuilder.Append("</color>");
+
+					// Update offset
+					offset = match.endIndex;
+				}
+
+				// Copy remaining text
+				for (int i = offset; i < inputText.Length; i++)
 					highlightedBuilder.Append(inputText[i]);
 
-				// Add the opening color tag
-				highlightedBuilder.Append(match.htmlColor);
+				// Convert to string
+				inputText = highlightedBuilder.ToString();
 
-				// Copy text in between the match boundaries
-				for (int i = match.startIndex; i < match.endIndex; i++)
-					highlightedBuilder.Append(inputText[i]);
+				Debug.Log($"Highlight: {inputText}");
 
-				// Add the closing color tag
-				highlightedBuilder.Append(closingTag);
-
-				// Update offset
-				offset = match.endIndex;
+				return inputText;
 			}
+			else
+			{
+				myPython.AnalyzeScript(inputText);
+				foreach (var token in myPython.Tokens.OrderByDescending(t => t.Location.Index))
+				{
+					Debug.Log($"Match token kind {token.Token.Kind}");
 
-			// Copy remaining text
-			for (int i = offset; i < inputText.Length; i++)
-				highlightedBuilder.Append(inputText[i]);
+					var startingTag = string.Empty;
+					var closingTag = string.Empty;
 
-			// Convert to string
-			inputText = highlightedBuilder.ToString();
+					if (token.Token.Kind != TokenKind.Error)
+					{
+						var tokenColor = languageTheme.GetTokenColor(token);
+						if (tokenColor == null)
+							continue;
+						startingTag = "<color=#" + ColorUtility.ToHtmlStringRGB(tokenColor.colorSettings.foreground) + ">";
+						closingTag = "</color>";
+					}
+					else
+					{
+						startingTag = "<color=red><u>";
+						closingTag = "</u></color>";
+					}
 
-			Debug.Log($"Highlight: {inputText}");
+					var start = token.Span.Start;
+					var end = token.Span.End;
+					if (end >= inputText.Length)
+						inputText += closingTag;
+					else
+						inputText = inputText[..end] + closingTag + inputText[end..];
+					inputText = inputText[..start] + startingTag + inputText[start..];
+				}
 
-			return inputText;
+				Debug.Log($"Highlight: {inputText}");
+				return inputText;
+			}
 		}
 
 		private void AutoIndentCaret(bool isClosingToken = false)
