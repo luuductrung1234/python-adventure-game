@@ -334,7 +334,6 @@ namespace IronPython.Custom
 
         private static TokenWithSpan CheckAdvancedTokenKind(TokenWithSpan token, SuiteStatement suiteStatement)
         {
-            // TODO: implement logic for AdvancedTokenKind
             switch (token.Token.Kind)
             {
                 case TokenKind.Constant:
