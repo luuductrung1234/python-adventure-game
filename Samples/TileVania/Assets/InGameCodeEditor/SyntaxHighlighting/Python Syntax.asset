@@ -55,9 +55,9 @@ MonoBehaviour:
       toKind: 106
     colorSettings:
       foreground: {r: 0.8784314, g: 0.42352942, b: 0.45882353, a: 1}
-  - name: KeywordDef
+  - name: Def | Class
     advancedTokenKinds: 
-    tokenKinds: 51000000
+    tokenKinds: 510000004f000000
     tokenRange:
       fromKind: 0
       toKind: 0
@@ -79,6 +79,54 @@ MonoBehaviour:
       toKind: 0
     colorSettings:
       foreground: {r: 0.68235296, g: 0.68235296, b: 0.68235296, a: 1}
+  - name: Number
+    advancedTokenKinds: 01000000
+    tokenKinds: 
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.7764706, g: 0.47058824, b: 0.8666667, a: 1}
+  - name: Class
+    advancedTokenKinds: 05000000
+    tokenKinds: 
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.38039216, g: 0.6862745, b: 0.9372549, a: 1}
+  - name: Variable
+    advancedTokenKinds: 04000000
+    tokenKinds: 
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.67058825, g: 0.69803923, b: 0.7490196, a: 1}
+  - name: Parameter
+    advancedTokenKinds: 02000000
+    tokenKinds: 
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.81960785, g: 0.6039216, b: 0.4, a: 1}
+  - name: Module
+    advancedTokenKinds: 06000000
+    tokenKinds: 
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.67058825, g: 0.69803923, b: 0.7490196, a: 1}
+  - name: Function
+    advancedTokenKinds: 03000000
+    tokenKinds: 
+    tokenRange:
+      fromKind: 0
+      toKind: 0
+    colorSettings:
+      foreground: {r: 0.59607846, g: 0.7647059, b: 0.4745098, a: 1}
   delimiterSymbols: '[ ] ( ) { } ; : , .'
   keywordGroups:
   - group: Keyword Group

@@ -141,7 +141,7 @@ namespace InGameCodeEditor
 				?? this.tokenColors.FirstOrDefault(tc => tc.tokenKinds.Contains(token.Token.Kind))
 				?? this.tokenColors.FirstOrDefault(tc => tc.tokenRange.fromKind <= token.Token.Kind && tc.tokenRange.toKind >= token.Token.Kind);
 
-			Debug.Log($"Match token kind {token.Token.Kind}:{token.AdvancedTokenKind} with color name {tokenColor.name}");
+			Debug.Log($"Match token kind {token.Token.Kind}:{token.AdvancedTokenKind} with color name {tokenColor?.name}");
 			return tokenColor;
 		}
 

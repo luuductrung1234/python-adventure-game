@@ -41,8 +41,10 @@ namespace IronPython.Custom
         /// </summary>
         /// <param name="eng"></param>
         /// <param name="sourceCode"></param>
+        /// <param name="suiteStatement"></param>
         /// <returns></returns>
-        public static List<TokenWithSpan> Tokenize(this ScriptEngine eng, string sourceCode, SuiteStatement suiteStatement)
+        public static List<TokenWithSpan> Tokenize(this ScriptEngine eng, string sourceCode,
+            SuiteStatement suiteStatement)
         {
             var tokenizer = eng.GetTokenizer(sourceCode);
             var tokens = new List<TokenWithSpan>();
@@ -74,7 +76,9 @@ namespace IronPython.Custom
             foreach (var commentSymbolIndex in sourceCode.IndexesOf('#'))
             {
                 var nextLineIndex = lines.FirstOrDefault(l => commentSymbolIndex < l);
-                var comment = sourceCode.Substring(commentSymbolIndex, nextLineIndex - commentSymbolIndex - 1);
+                var comment = nextLineIndex == 0
+                    ? sourceCode.Substring(commentSymbolIndex)
+                    : sourceCode.Substring(commentSymbolIndex, nextLineIndex - commentSymbolIndex - 1);
                 var location = tokenizer.IndexToLocation(commentSymbolIndex);
                 var span = new IndexSpan(commentSymbolIndex, comment.Length);
                 var token = new CommentToken(comment);
@@ -82,28 +86,6 @@ namespace IronPython.Custom
             }
 
             return tokens;
-        }
-
-        private static TokenWithSpan CheckAdvancedTokenKind(TokenWithSpan token, SuiteStatement suiteStatement)
-        {
-            // TODO: implement logic for AdvancedTokenKind
-            switch (token.Token.Kind)
-            {
-                case TokenKind.Constant:
-                    var firstChar = token.Token.Image[0].ToString();
-                    var lastChar = token.Token.Image[token.Token.Image.Length - 1].ToString();
-                    if (!int.TryParse(firstChar, out _) || !int.TryParse(lastChar, out _))
-                        return token;
-                    var image = token.Token.Image.Replace("_", "");
-                    token.SetAdvancedTokenKind(double.TryParse(image, out _)
-                        ? AdvancedTokenKind.Number
-                        : AdvancedTokenKind.Unspecified);
-                    break;
-                case TokenKind.Name:
-                    break;
-            }
-
-            return token;
         }
 
         public static TokenWithSpan ToToken(this SyntaxErrorException ex, Tokenizer tokenizer)
@@ -245,6 +227,52 @@ namespace IronPython.Custom
             return (source, scope);
         }
 
+        public static Dictionary<string, PythonVariable> GetVariables(this ScopeStatement scopeStatement)
+        {
+            var variables = (Dictionary<string, PythonVariable>)scopeStatement
+                .GetType()
+                .GetProperty("Variables", BindingFlags.Instance | BindingFlags.NonPublic)?
+                .GetValue(scopeStatement, null);
+            return variables;
+        }
+
+        public static SuiteStatement GetSuite(this ScopeStatement nestedScope)
+        {
+            return nestedScope?.NodeName switch
+            {
+                nameof(FunctionDefinition) => (SuiteStatement)((FunctionDefinition)nestedScope).Body,
+                nameof(ClassDefinition) => (SuiteStatement)((ClassDefinition)nestedScope).Body,
+                nameof(PythonAst) => (SuiteStatement)((PythonAst)nestedScope).Body,
+                _ => null
+            };
+        }
+
+        public static bool IsFunction(this ScopeStatement scope, TokenWithSpan token)
+        {
+            var suite = scope.GetSuite();
+            return (scope.Name == token.Token.Image && scope.NodeName == nameof(FunctionDefinition)) ||
+                   suite.Statements.Any(s => s is FunctionDefinition f && f.Name == token.Token.Image);
+        }
+
+        public static bool IsImport(this ScopeStatement scope, TokenWithSpan token)
+        {
+            var suite = scope.GetSuite();
+            return suite.Statements.Any(s =>
+                s is ImportStatement i && i.Names.SelectMany(n => n.Names).Contains(token.Token.Image));
+        }
+
+        public static bool IsClass(this ScopeStatement scope, TokenWithSpan token)
+        {
+            var suite = scope.GetSuite();
+            return (scope.Name == token.Token.Image && scope.NodeName == nameof(ClassDefinition)) ||
+                   suite.Statements.Any(s => s is ClassDefinition c && c.Name == token.Token.Image);
+        }
+
+        public static bool IsParameter(this ScopeStatement scope, TokenWithSpan token)
+        {
+            return scope is FunctionDefinition function && function.Parameters.Any(p => p.Name == token.Token.Image);
+        }
+
         private static PythonAst ParseAndBindAst(this LanguageContext languageContext, CompilerContext context)
         {
             var properties = ScriptCodeParseResult.Complete;
@@ -302,6 +330,88 @@ namespace IronPython.Custom
 
             ast.Bind();
             return ast;
+        }
+
+        private static TokenWithSpan CheckAdvancedTokenKind(TokenWithSpan token, SuiteStatement suiteStatement)
+        {
+            // TODO: implement logic for AdvancedTokenKind
+            switch (token.Token.Kind)
+            {
+                case TokenKind.Constant:
+                    // TODO: bug | sometime use try to input a string of digits
+                    if (token.Token.Image.Length == 0)
+                        return token;
+                    var firstChar = token.Token.Image[0].ToString();
+                    var lastChar = token.Token.Image[token.Token.Image.Length - 1].ToString();
+                    if (!int.TryParse(firstChar, out _) || !int.TryParse(lastChar, out _))
+                        return token;
+                    var image = token.Token.Image.Replace("_", "");
+                    token.SetContext(double.TryParse(image, out _)
+                        ? AdvancedTokenKind.Number
+                        : AdvancedTokenKind.Unspecified);
+                    break;
+                case TokenKind.Name:
+                    var scope = suiteStatement.TryGetParentScope(token);
+                    switch (scope.NodeName)
+                    {
+                        // parentScope is null, if token is global variable/function/import/class
+                        // parentScope is not null, if token is argument or local variable/function/import/class
+                        case nameof(PythonAst):
+                        {
+                            var advancedKind = scope.IsFunction(token) ? AdvancedTokenKind.Function :
+                                scope.IsImport(token) ? AdvancedTokenKind.Module :
+                                scope.IsClass(token) ? AdvancedTokenKind.Class : AdvancedTokenKind.Variable;
+                            token.SetContext(advancedKind, scope);
+                            break;
+                        }
+                        case nameof(FunctionDefinition):
+                        {
+                            var advancedKind = scope.IsFunction(token) || suiteStatement.Parent.IsFunction(token)
+                                ?
+                                AdvancedTokenKind.Function
+                                : scope.IsImport(token) || suiteStatement.Parent.IsImport(token)
+                                    ? AdvancedTokenKind.Module
+                                    : scope.IsClass(token) || suiteStatement.Parent.IsClass(token)
+                                        ? AdvancedTokenKind.Class
+                                        : scope.IsParameter(token)
+                                            ? AdvancedTokenKind.Parameter
+                                            : AdvancedTokenKind.Variable;
+                            token.SetContext(advancedKind, scope);
+                            break;
+                        }
+                    }
+
+                    break;
+            }
+
+            return token;
+        }
+
+        private static ScopeStatement TryGetParentScope(this SuiteStatement suiteStatement, TokenWithSpan token)
+        {
+            var parentScope = suiteStatement.Parent;
+            var currentSuit = suiteStatement;
+            var nestedScope = suiteStatement.Statements.FirstOrDefault(statement =>
+                statement.StartIndex <= token.Location.Index && statement.EndIndex >= token.Location.Index);
+            do
+            {
+                switch (nestedScope?.NodeName)
+                {
+                    case nameof(FunctionDefinition):
+                        parentScope = (FunctionDefinition)nestedScope;
+                        currentSuit = (SuiteStatement)((FunctionDefinition)nestedScope).Body;
+                        break;
+                    case nameof(ClassDefinition):
+                        parentScope = (ClassDefinition)nestedScope;
+                        currentSuit = (SuiteStatement)((ClassDefinition)nestedScope).Body;
+                        break;
+                }
+
+                nestedScope = currentSuit.Statements.FirstOrDefault(statement =>
+                    statement.StartIndex <= token.Location.Index && statement.EndIndex >= token.Location.Index);
+            } while (nestedScope?.NodeName == nameof(FunctionDefinition));
+
+            return parentScope;
         }
     }
 }

@@ -4,9 +4,10 @@ namespace IronPython.Custom
 	{
 		Unspecified = 0,
 		Number = 1,
-		Argument = 2,
+		Parameter = 2,
 		Function = 3,
 		Variable = 4,
-		Class = 5
+		Class = 5,
+		Module = 6
 	}
 }

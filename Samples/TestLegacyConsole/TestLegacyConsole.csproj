@@ -77,6 +77,9 @@
         <Compile Include="..\TileVania\Assets\Scripts\MyPython.cs">
           <Link>IronPython\Custom\MyPython.cs</Link>
         </Compile>
+        <Compile Include="..\TileVania\Assets\Scripts\PythonVariable.cs">
+          <Link>IronPython\Custom\PythonVariable.cs</Link>
+        </Compile>
         <Compile Include="..\TileVania\Assets\Scripts\ScriptHostProxy.cs">
           <Link>IronPython\Custom\ScriptHostProxy.cs</Link>
         </Compile>
@@ -88,6 +91,9 @@
         </Compile>
         <Compile Include="..\TileVania\Assets\Scripts\TokenWithSpan.cs">
           <Link>IronPython\Custom\TokenWithSpan.cs</Link>
+        </Compile>
+        <Compile Include="..\TileVania\Assets\Scripts\VariableKind.cs">
+          <Link>IronPython\Custom\VariableKind.cs</Link>
         </Compile>
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
