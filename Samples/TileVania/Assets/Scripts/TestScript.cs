@@ -31,6 +31,6 @@ def get_sys_info_dict():
 	}
 ";
 		var myPython = new MyPython((object message) => Debug.Log(message));
-		myPython.PlayingAround(sourceCode);
+		myPython.SampleUsage(sourceCode);
 	}
 }
