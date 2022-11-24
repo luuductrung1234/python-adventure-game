@@ -10,6 +10,7 @@ using IronPython.Runtime;
 using IronPython.Compiler.Ast;
 using Microsoft.Scripting;
 using IronPython.Compiler;
+using IronPython.Runtime.Types;
 using TokenKind = IronPython.Compiler.TokenKind;
 
 namespace IronPython.Custom
@@ -47,6 +48,7 @@ namespace IronPython.Custom
             SuiteStatement suiteStatement)
         {
             var tokenizer = eng.GetTokenizer(sourceCode);
+            var context = (PythonContext) eng.GetLanguageContext();
             var tokens = new List<TokenWithSpan>();
             try
             {
@@ -61,7 +63,7 @@ namespace IronPython.Custom
                         continue;
                     }
 
-                    CheckAdvancedTokenKind(currentToken, suiteStatement);
+                    CheckAdvancedTokenKind(currentToken, suiteStatement, context);
                     tokens.Add(currentToken);
                     currentToken = tokenizer.NextToken();
                 }
@@ -236,7 +238,7 @@ namespace IronPython.Custom
             return variables;
         }
 
-        public static SuiteStatement GetSuite(this ScopeStatement nestedScope)
+        private static SuiteStatement GetSuite(this ScopeStatement nestedScope)
         {
             return nestedScope?.NodeName switch
             {
@@ -247,30 +249,42 @@ namespace IronPython.Custom
             };
         }
 
-        public static bool IsFunction(this ScopeStatement scope, TokenWithSpan token)
+        private static bool IsFunction(this ScopeStatement scope, TokenWithSpan token)
         {
             var suite = scope.GetSuite();
             return (scope.Name == token.Token.Image && scope.NodeName == nameof(FunctionDefinition)) ||
                    suite.Statements.Any(s => s is FunctionDefinition f && f.Name == token.Token.Image);
         }
 
-        public static bool IsImport(this ScopeStatement scope, TokenWithSpan token)
+        private static bool IsImport(this ScopeStatement scope, TokenWithSpan token)
         {
             var suite = scope.GetSuite();
             return suite.Statements.Any(s =>
                 s is ImportStatement i && i.Names.SelectMany(n => n.Names).Contains(token.Token.Image));
         }
 
-        public static bool IsClass(this ScopeStatement scope, TokenWithSpan token)
+        private static bool IsClass(this ScopeStatement scope, TokenWithSpan token)
         {
             var suite = scope.GetSuite();
             return (scope.Name == token.Token.Image && scope.NodeName == nameof(ClassDefinition)) ||
                    suite.Statements.Any(s => s is ClassDefinition c && c.Name == token.Token.Image);
         }
 
-        public static bool IsParameter(this ScopeStatement scope, TokenWithSpan token)
+        private static bool IsParameter(this ScopeStatement scope, TokenWithSpan token)
         {
             return scope is FunctionDefinition function && function.Parameters.Any(p => p.Name == token.Token.Image);
+        }
+
+        private static bool IsBuildInFunction(this PythonContext context, TokenWithSpan token)
+        {
+            return context.BuiltinModuleDict.Any(item =>
+                (string)item.Key == token.Token.Image && item.Value is BuiltinFunction);
+        }
+
+        private static bool IsBuildIn(this PythonContext context, TokenWithSpan token)
+        {
+            return context.BuiltinModuleDict.Any(item =>
+                (string)item.Key == token.Token.Image);
         }
 
         private static PythonAst ParseAndBindAst(this LanguageContext languageContext, CompilerContext context)
@@ -332,7 +346,8 @@ namespace IronPython.Custom
             return ast;
         }
 
-        private static TokenWithSpan CheckAdvancedTokenKind(TokenWithSpan token, SuiteStatement suiteStatement)
+        private static TokenWithSpan CheckAdvancedTokenKind(TokenWithSpan token, SuiteStatement suiteStatement,
+            PythonContext context)
         {
             switch (token.Token.Kind)
             {
@@ -359,11 +374,31 @@ namespace IronPython.Custom
                         {
                             var advancedKind = scope.IsFunction(token) ? AdvancedTokenKind.Function :
                                 scope.IsImport(token) ? AdvancedTokenKind.Module :
-                                scope.IsClass(token) ? AdvancedTokenKind.Class : AdvancedTokenKind.Variable;
+                                scope.IsClass(token) ? AdvancedTokenKind.Class :
+                                context.IsBuildInFunction(token) ? AdvancedTokenKind.BuildInFunction :
+                                context.IsBuildIn(token) ? AdvancedTokenKind.BuildIn : AdvancedTokenKind.Variable;
                             token.SetContext(advancedKind, scope);
                             break;
                         }
                         case nameof(FunctionDefinition):
+                        {
+                            var advancedKind = scope.IsFunction(token) || suiteStatement.Parent.IsFunction(token)
+                                ? AdvancedTokenKind.Function
+                                : scope.IsImport(token) || suiteStatement.Parent.IsImport(token)
+                                    ? AdvancedTokenKind.Module
+                                    : scope.IsClass(token) || suiteStatement.Parent.IsClass(token)
+                                        ? AdvancedTokenKind.Class
+                                        : scope.IsParameter(token)
+                                            ? AdvancedTokenKind.Parameter
+                                            : context.IsBuildInFunction(token)
+                                                ? AdvancedTokenKind.BuildInFunction
+                                                : context.IsBuildIn(token)
+                                                    ? AdvancedTokenKind.BuildIn
+                                                    : AdvancedTokenKind.Variable;
+                            token.SetContext(advancedKind, scope);
+                            break;
+                        }
+                        case nameof(ClassDefinition):
                         {
                             var advancedKind = scope.IsFunction(token) || suiteStatement.Parent.IsFunction(token)
                                 ?
@@ -372,9 +407,11 @@ namespace IronPython.Custom
                                     ? AdvancedTokenKind.Module
                                     : scope.IsClass(token) || suiteStatement.Parent.IsClass(token)
                                         ? AdvancedTokenKind.Class
-                                        : scope.IsParameter(token)
-                                            ? AdvancedTokenKind.Parameter
-                                            : AdvancedTokenKind.Variable;
+                                        : context.IsBuildInFunction(token)
+                                            ? AdvancedTokenKind.BuildInFunction
+                                            : context.IsBuildIn(token)
+                                                ? AdvancedTokenKind.BuildIn
+                                                : AdvancedTokenKind.Variable;
                             token.SetContext(advancedKind, scope);
                             break;
                         }

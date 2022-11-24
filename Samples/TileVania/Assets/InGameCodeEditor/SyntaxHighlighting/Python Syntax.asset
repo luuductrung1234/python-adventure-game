@@ -87,8 +87,8 @@ MonoBehaviour:
       toKind: 0
     colorSettings:
       foreground: {r: 0.7764706, g: 0.47058824, b: 0.8666667, a: 1}
-  - name: Class
-    advancedTokenKinds: 05000000
+  - name: Class & BuildIn
+    advancedTokenKinds: 0500000007000000
     tokenKinds: 
     tokenRange:
       fromKind: 0

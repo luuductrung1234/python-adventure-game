@@ -8,6 +8,8 @@ namespace IronPython.Custom
 		Function = 3,
 		Variable = 4,
 		Class = 5,
-		Module = 6
+		Module = 6,
+		BuildIn = 7,
+		BuildInFunction = 8
 	}
 }
