@@ -13,6 +13,7 @@ import System
 # just to test how comment token look like
 some_text = 'abcXYZ'
 another_text = '123'
+some_num = 34.5
 greeting_call_count = 0	# I have some comment here
 
 # just to test how comment token look like
