@@ -32,7 +32,7 @@ public class Camera : MonoBehaviour
                 tempPos.y = (float) minY;
             } 
 
-            transform.position = tempPos;
+            transform.position = Vector3.Lerp(transform.position, tempPos, 0.2f);
         }   
     }
 }
