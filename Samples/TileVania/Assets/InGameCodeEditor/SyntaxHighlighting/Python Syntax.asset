@@ -87,7 +87,7 @@ MonoBehaviour:
       toKind: 0
     colorSettings:
       foreground: {r: 0.7764706, g: 0.47058824, b: 0.8666667, a: 1}
-  - name: Class & BuildIn
+  - name: Class | BuildIn
     advancedTokenKinds: 0500000007000000
     tokenKinds: 
     tokenRange:
@@ -119,8 +119,8 @@ MonoBehaviour:
       toKind: 0
     colorSettings:
       foreground: {r: 0.67058825, g: 0.69803923, b: 0.7490196, a: 1}
-  - name: Function
-    advancedTokenKinds: 03000000
+  - name: Function | BuildIn Function
+    advancedTokenKinds: 0300000008000000
     tokenKinds: 
     tokenRange:
       fromKind: 0
