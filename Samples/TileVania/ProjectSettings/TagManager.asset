@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Background
   - Ground
+  - Trap
   layers:
   - Default
   - TransparentFX
