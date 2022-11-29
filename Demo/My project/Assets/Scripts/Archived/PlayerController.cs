@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
     private float moveX;
 
 
-    private string WALK_ANIMATION = "Walk";
+    private const string WALK_ANIMATION = "Walk";
+    private const string JUMP_ANIMATION = "JumpUp";
+    private const string FALL_ANIMATION = "Fall";
 
     private Rigidbody2D myBody;
     private SpriteRenderer sr;
@@ -18,21 +20,16 @@ public class PlayerController : MonoBehaviour
     private GameController gameController;
 
     private void Awake() {
-	    gameController = GameObject.FindObjectOfType<GameController>();
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
     private void Update(){
-        if (gameController.walkEnable){
-            Walk();
-        }
+        Walk();
     }
 
     private void LateUpdate(){
-        if (gameController.walkEnable){
-            PLayerJump();
-        }
+        PLayerJump();
     }
 
 
