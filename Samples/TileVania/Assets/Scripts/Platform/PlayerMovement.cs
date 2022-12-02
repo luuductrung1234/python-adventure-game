@@ -50,6 +50,13 @@ public class PlayerMovement : MonoBehaviour
                 sr.flipX = false;
             }
         }
+        if (myBody.velocity.y != 0){
+            isOnGround = false;
+            anim.SetBool(JUMP_ANIMATION, true);
+        }else{
+            isOnGround = true;
+            anim.SetBool(JUMP_ANIMATION, false);
+        } 
     }
 
     bool isOnGround = true;
@@ -60,11 +67,5 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool(JUMP_ANIMATION, true);
         }
         anim.SetFloat("velocityY", myBody.velocity.y);
-    }
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Trap")){
-            isOnGround = true;
-            anim.SetBool(JUMP_ANIMATION, false);
-        }
     }
 }
