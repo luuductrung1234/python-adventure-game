@@ -12,12 +12,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Wall
+  - Trap
+  - Background
   - 
   - 
   - 
@@ -47,6 +47,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 3431616737
+    locked: 0
+  - name: Traps
+    uniqueID: 4005678225
     locked: 0
   - name: Ground
     uniqueID: 4292210615

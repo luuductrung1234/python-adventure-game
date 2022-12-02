@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1734023500664768737}
   - component: {fileID: 1734023500664768738}
   - component: {fileID: 1734023500664768740}
+  - component: {fileID: 956041046695633061}
   - component: {fileID: 1734023500664768741}
-  - component: {fileID: 1734023500664768742}
   - component: {fileID: 1734023500664768736}
   - component: {fileID: 1281671088}
   m_Layer: 0
@@ -110,6 +110,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &956041046695633061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734023500664768743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65fdc6062c654fc41b9992d6e928370e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  jumpFroces: 2
 --- !u!114 &1734023500664768741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,20 +146,6 @@ MonoBehaviour:
   - {fileID: 0}
   fullHeart: {fileID: 210811614, guid: 36f039975f3f24de78f74fd64ad5621f, type: 3}
   emptyHeart: {fileID: 1973099726, guid: 36f039975f3f24de78f74fd64ad5621f, type: 3}
---- !u!114 &1734023500664768742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734023500664768743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ad5bf3fc01254361a8f34a0df60bf59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 9
-  jumpFroces: 10
 --- !u!95 &1734023500664768736
 Animator:
   serializedVersion: 4
