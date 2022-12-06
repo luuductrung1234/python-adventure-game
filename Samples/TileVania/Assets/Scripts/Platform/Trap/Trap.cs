@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Saw : MonoBehaviour
+public class Trap : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
