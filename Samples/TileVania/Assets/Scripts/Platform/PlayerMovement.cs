@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -30,11 +31,16 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void LateUpdate(){
-        if (!freeze){
-            PLayerJump();
+        PLayerJump();
+        Y_debug();
+    }
+    void Y_debug()
+    {
+        if (Input.GetKeyDown("1"))
+        {
+            SceneManager.LoadScene("YunjaeKimMap");
         }
     }
-
 
     private void Walk(){
         moveX = Input.GetAxisRaw("Horizontal");
