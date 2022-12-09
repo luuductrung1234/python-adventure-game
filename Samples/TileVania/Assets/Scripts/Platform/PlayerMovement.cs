@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float speed, jumpFroces;
     private float moveX;
+    private bool freeze = false;
 
 
     private const string WALK_ANIMATION = "Walk";
@@ -23,11 +24,15 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
     }
     private void Update(){
-        Walk();
+        if (!freeze){
+            Walk();
+        }
     }
 
     private void LateUpdate(){
-        PLayerJump();
+        if (!freeze){
+            PLayerJump();
+        }
     }
 
 

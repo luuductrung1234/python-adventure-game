@@ -16,6 +16,7 @@ public class Health : MonoBehaviour
 
 
     private void Awake() {
+        Time.timeScale = 1;
         currentHealth = maxHealth;
         playerPos = GameObject.Find("Player").transform;
     }
@@ -37,6 +38,10 @@ public class Health : MonoBehaviour
             }else{
                 hearts[i].sprite = emptyHeart;
             }
+        }
+
+        if (currentHealth <= 0){
+            gameOver();
         }
     }
 
@@ -72,4 +77,8 @@ public class Health : MonoBehaviour
                yield return new WaitForSeconds(0.01f);
            }
      }
+
+    private void gameOver(){
+        Time.timeScale = 1;
+    }
 }
