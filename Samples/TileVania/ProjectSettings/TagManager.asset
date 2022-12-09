@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Trap
   - MovingPlatform
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -53,6 +54,9 @@ TagManager:
     locked: 0
   - name: Item
     uniqueID: 2974300789
+    locked: 0
+  - name: Enemy
+    uniqueID: 2552839615
     locked: 0
   - name: Player
     uniqueID: 295555485
