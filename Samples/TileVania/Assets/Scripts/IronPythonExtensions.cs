@@ -37,6 +37,12 @@ namespace IronPython.Custom
 			return ast;
 		}
 
+		public static CodeContext GetCodeContext(this PythonAst ast)
+				=> ((ModuleContext)ast
+							 .GetType()
+							 .GetProperty("ModuleContext", BindingFlags.Instance | BindingFlags.NonPublic)?
+							 .GetValue(ast, null))?.GlobalContext;
+
 		/// <summary>
 		/// Break sourcecode into tokens (with useful information)
 		/// </summary>
