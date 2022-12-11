@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4587f509b1d6442088ad25599276fa78, type: 3}
   m_Name: Question 5
   m_EditorClassIdentifier: 
-  question: Can we have both if/else statement and for loop  in the same code?
+  question: How to code answer() function to return value 2?
   answers:
-  - Answer 1
-  - Answer 2
-  - Answer 3
-  - Answer 4
-  correctAnswerIndex: 2
+  - 2
+  correctAnswerIndex: 0
+  seedAnswer: "# import sys\n# import System\n# you can import build-in modules (of
+    Python or .NET Clr)\n\n# answer start\n\ndef answer():\n\t# write your own code
+    to solve the challenge here...\n\ta = 18\n\tb = 4\n\treturn a\n\n# answer end\n"
