@@ -14,7 +14,6 @@ public class Health : MonoBehaviour
 
     private Transform playerPos;
 
-
     private void Awake() {
         Time.timeScale = 1;
         currentHealth = maxHealth;
@@ -83,5 +82,9 @@ public class Health : MonoBehaviour
 
     public void UpdateHealth(){
         SceneData.currentHealth = currentHealth;
+    }
+
+    public void healUp(){
+        currentHealth = maxHealth;
     }
 }

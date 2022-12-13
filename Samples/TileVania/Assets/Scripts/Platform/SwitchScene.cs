@@ -5,8 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class SwitchScene : MonoBehaviour
 {
+    enum toScene{
+        MainScene,
+        LeonStage,
+        YunjaeKimMap,
+    }
+
     [SerializeField]
-    private string sceneName;
+    toScene sceneName = toScene.MainScene;
+
+
+
+    [SerializeField]
+    private bool enableSection = false;
+    enum enableMainSceneSection{
+        section1,
+        section2,
+        section3,
+    }
+
+    [SerializeField]
+    enableMainSceneSection section = enableMainSceneSection.section1;
 
     private PlayerMovement pos;
     private Health hp;
@@ -16,10 +35,39 @@ public class SwitchScene : MonoBehaviour
         hp = GameObject.FindObjectOfType<Health>();
     }
 
-    private void OnMouseDown() {
-        pos.UpdatePosition();
-        hp.UpdateHealth();
+    bool isCollide = false;
+    private void LateUpdate() {
+        switchScene();
+    }
 
-        SceneManager.LoadScene(sceneName);
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Player"){
+            isCollide = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other) {
+        if (other.tag == "Player"){
+            isCollide = false;
+        }
+    }
+    private void switchScene() {
+        if (isCollide){
+            if (Input.GetKeyDown(KeyCode.E)){
+                pos.UpdatePosition();
+                hp.UpdateHealth();
+
+                if(enableSection){
+                    if (section == enableMainSceneSection.section1){
+                        SceneData.section1 = true;
+                    }else if (section == enableMainSceneSection.section2){
+                        SceneData.section2 = true;
+                    }else if (section == enableMainSceneSection.section3){
+                        SceneData.section3 = true;
+                    }
+                }
+                SceneManager.LoadScene(sceneName.ToString());
+            }
+        }
     }
 }
