@@ -9,6 +9,7 @@ public class SwitchScene : MonoBehaviour
         MainScene,
         LeonStage,
         YunjaeKimMap,
+        TinaStage
     }
 
     [SerializeField]

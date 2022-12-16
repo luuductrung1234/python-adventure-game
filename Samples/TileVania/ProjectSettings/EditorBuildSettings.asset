@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LeonStage.unity
     guid: 1a942ac5955006a4295da6348af832d1
+  - enabled: 1
+    path: Assets/Scenes/TinaStage.unity
+    guid: 5ae148c53ab443c459db56b9d4316f99
   m_configObjects: {}
