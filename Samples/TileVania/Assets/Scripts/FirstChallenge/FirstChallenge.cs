@@ -73,18 +73,25 @@ public class FirstChallenge : MonoBehaviour
 		}
 		var blockData = rows.Select(row => ((string)row).ToCharArray()).ToList();
 		var problemNotSolved = false;
+		var placementCount = 0;
 		for (int row = 0; row < 8; row++)
 		{
 			for (int column = 0; column < 8; column++)
 			{
 				var isError = !Validate(row, column, blockData);
 				if (isError) problemNotSolved = true;
-				updateBoardBlock(row, column, blockData[row][column] == 'Q', isError);
+				var isPlacement = blockData[row][column] == 'Q';
+				if (isPlacement) placementCount++;
+				updateBoardBlock(row, column, isPlacement, isError);
 			}
 		}
-		if (problemNotSolved)
+		if (problemNotSolved || placementCount < 8)
 		{
 			warningText.text = "Fail! Problem is not solved";
+		}
+		else
+		{
+			onChallengeSolved();
 		}
 	}
 
