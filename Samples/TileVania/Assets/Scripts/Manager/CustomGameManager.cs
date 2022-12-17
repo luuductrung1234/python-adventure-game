@@ -20,9 +20,16 @@ public class CustomGameManager : MonoBehaviour
 		SetupQuiz();
 	}
 
-	public void OnReplayLevel()
+	public void OnRetryQuiz()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+	public void OnResumeMap()
+	{
+		if (SceneData.currentHealth == 0)
+			SceneData.currentHealth = 1;
+		SceneManager.LoadScene(SceneData.currentScene);
 	}
 
 	public void OnAnswered()
@@ -40,10 +47,13 @@ public class CustomGameManager : MonoBehaviour
 		endScreen.gameObject.SetActive(false);
 		quiz.gameObject.SetActive(true);
 		onAnswered = quiz.OnAnswer;
-		quiz.onQuizComplete = () =>
+		quiz.onQuizComplete = (int score) =>
 		{
 			endScreen.gameObject.SetActive(true);
 			quiz.gameObject.SetActive(false);
+			int healthGain = (int)Math.Round(SceneData.maxHealth * score / 100.0);
+			SceneData.currentHealth = healthGain;
+			Debug.Log($"Finished the quiz, gain {healthGain}");
 		};
 	}
 }

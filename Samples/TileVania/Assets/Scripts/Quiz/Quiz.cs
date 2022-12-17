@@ -39,7 +39,7 @@ public class Quiz : MonoBehaviour
 	private static readonly bool BTN_DISABLE = true;
 	private int maxQuestion = 3;
 
-	public Action onQuizComplete;
+	public Action<int> onQuizComplete;
 
 	void Start()
 	{
@@ -73,7 +73,7 @@ public class Quiz : MonoBehaviour
 	{
 		if (questions == null || questions.Count == 0 || progressBar.value == maxQuestion)
 		{
-			onQuizComplete?.Invoke();
+			onQuizComplete?.Invoke(scoreKeeper.CalculateScore());
 			return;
 		}
 

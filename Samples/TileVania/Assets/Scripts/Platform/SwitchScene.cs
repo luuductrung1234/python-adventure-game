@@ -1,74 +1,95 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+enum ToScene
+{
+	MainScene,
+	LeonStage,
+	YunjaeKimMap,
+	TinaStage,
+	SampleQuizScene
+}
+
+enum EnableMainSceneSection
+{
+	None,
+	Section1,
+	Section2,
+	Section3,
+}
+
 public class SwitchScene : MonoBehaviour
 {
-    enum toScene{
-        MainScene,
-        LeonStage,
-        YunjaeKimMap,
-        TinaStage
-    }
+	[SerializeField]
+	ToScene sceneName = ToScene.MainScene;
 
-    [SerializeField]
-    toScene sceneName = toScene.MainScene;
+	[SerializeField]
+	private bool enableSection = false;
 
+	[SerializeField]
+	EnableMainSceneSection section = EnableMainSceneSection.None;
 
+	private PlayerMovement _pos;
+	private Health _hp;
+	private bool isCollide = false;
 
-    [SerializeField]
-    private bool enableSection = false;
-    enum enableMainSceneSection{
-        section1,
-        section2,
-        section3,
-    }
+	private void Awake()
+	{
+		_pos = GameObject.FindObjectOfType<PlayerMovement>();
+		_hp = GameObject.FindObjectOfType<Health>();
+	}
 
-    [SerializeField]
-    enableMainSceneSection section = enableMainSceneSection.section1;
+	private void LateUpdate()
+	{
+		DoSwitchScene();
+	}
 
-    private PlayerMovement pos;
-    private Health hp;
+	private void OnTriggerEnter2D(Collider2D other)
+	{
+		if (other.tag == "Player")
+		{
+			isCollide = true;
+		}
+	}
 
-    private void Awake() {
-        pos = GameObject.FindObjectOfType<PlayerMovement>();
-        hp = GameObject.FindObjectOfType<Health>();
-    }
+	private void OnTriggerExit2D(Collider2D other)
+	{
+		if (other.tag == "Player")
+		{
+			isCollide = false;
+		}
+	}
 
-    bool isCollide = false;
-    private void LateUpdate() {
-        switchScene();
-    }
+	private void DoSwitchScene()
+	{
+		if (isCollide)
+		{
+			if (Input.GetKeyDown(KeyCode.E))
+			{
+				_pos.UpdatePosition();
+				_hp.UpdateHealth();
 
-    private void OnTriggerEnter2D(Collider2D other) {
-        if (other.tag == "Player"){
-            isCollide = true;
-        }
-    }
+				SceneData.currentScene = sceneName.ToString();
 
-    private void OnTriggerExit2D(Collider2D other) {
-        if (other.tag == "Player"){
-            isCollide = false;
-        }
-    }
-    private void switchScene() {
-        if (isCollide){
-            if (Input.GetKeyDown(KeyCode.E)){
-                pos.UpdatePosition();
-                hp.UpdateHealth();
-
-                if(enableSection){
-                    if (section == enableMainSceneSection.section1){
-                        SceneData.section1 = true;
-                    }else if (section == enableMainSceneSection.section2){
-                        SceneData.section2 = true;
-                    }else if (section == enableMainSceneSection.section3){
-                        SceneData.section3 = true;
-                    }
-                }
-                SceneManager.LoadScene(sceneName.ToString());
-            }
-        }
-    }
+				if (enableSection && section != EnableMainSceneSection.None)
+				{
+					if (section == EnableMainSceneSection.Section1 && !SceneData.section1)
+					{
+						SceneData.section1 = true;
+						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
+					}
+					else if (section == EnableMainSceneSection.Section2 && !SceneData.section2)
+					{
+						SceneData.section2 = true;
+						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
+					}
+					else if (section == EnableMainSceneSection.Section3 && !SceneData.section3)
+					{
+						SceneData.section3 = true;
+						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
+					}
+				}
+			}
+		}
+	}
 }
