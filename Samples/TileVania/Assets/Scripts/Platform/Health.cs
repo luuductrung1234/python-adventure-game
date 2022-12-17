@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -65,6 +64,7 @@ public class Health : MonoBehaviour
 		if (currentHealth <= 0)
 		{
 			SceneData.currentHealth = 0;
+			SceneData.challengeMode = ChallengeMode.Quiz;
 			SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
 		}
 	}

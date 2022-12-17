@@ -20,7 +20,17 @@ namespace TestLegacyConsole
 
 def answer():
 	# write your own code to solve the challenge here...
-	return 0
+	placement = [
+		'........',
+		'........',
+		'........',
+		'........',
+		'........',
+		'........',
+		'........',
+		'........'
+	]
+	return placement
 
 # answer end
 "; 

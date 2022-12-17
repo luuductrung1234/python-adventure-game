@@ -62,7 +62,7 @@ public class Quiz : MonoBehaviour
 		timer.CancelTimer();
 	}
 
-	public void OnAnswer()
+	public void OnAnswered()
 	{
 		if (codeEditor == null || string.IsNullOrEmpty(codeEditor.Text))
 			return;
