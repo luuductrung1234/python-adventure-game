@@ -19,11 +19,28 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sr;
     private Animator anim;
 
+    string currentScene;
+
     private void Awake() {
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
+
+    private void Start() {
+        string scene = SceneManager.GetActiveScene().name;
+        currentScene = scene;
+        if (scene == "MainScene" && SceneData.playerMainScenePos != new Vector3(0f, 0f, 0f)){
+            transform.position = SceneData.playerMainScenePos;
+        }
+        else if (scene == "LeonStage" && SceneData.playerLeonPos != new Vector3(0f, 0f, 0f)){
+            transform.position = SceneData.playerLeonPos;
+        }
+        else if (scene == "YunjaeKimMap" && SceneData.playerLilyPos != new Vector3(0f, 0f, 0f)){
+            transform.position = SceneData.playerLilyPos;
+        }
+    }
+
     private void Update(){
         if (!freeze){
             Walk();
@@ -32,14 +49,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate(){
         PLayerJump();
-        Y_debug();
-    }
-    void Y_debug()
-    {
-        if (Input.GetKeyDown("1"))
-        {
-            SceneManager.LoadScene("YunjaeKimMap");
-        }
     }
 
     private void Walk(){
@@ -78,5 +87,19 @@ public class PlayerMovement : MonoBehaviour
             anim.SetBool(JUMP_ANIMATION, true);
         }
         anim.SetFloat("velocityY", myBody.velocity.y);
+    }
+
+    public void UpdatePosition(){
+        switch (currentScene){
+            case "MainScene":
+                SceneData.playerMainScenePos = transform.position;
+                break;
+            case "LeonStage":
+                SceneData.playerLeonPos = transform.position;
+                break;
+            case "YunjaeKimMap":
+                SceneData.playerLilyPos = transform.position;
+                break;
+        }
     }
 }

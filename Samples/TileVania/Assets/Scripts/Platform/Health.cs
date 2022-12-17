@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Health : MonoBehaviour
 {
     public int currentHealth;
-    public int maxHealth = 3;
+    public int maxHealth = SceneData.maxHealth;
 
     public Image[] hearts;
     public Sprite fullHeart;
@@ -14,11 +14,18 @@ public class Health : MonoBehaviour
 
     private Transform playerPos;
 
-
     private void Awake() {
         Time.timeScale = 1;
         currentHealth = maxHealth;
         playerPos = GameObject.Find("Player").transform;
+    }
+
+    private void Start() {
+        if (SceneData.currentHealth == 0){
+            currentHealth = SceneData.maxHealth;
+        }else{
+            currentHealth = SceneData.currentHealth;
+        }
     }
 
     private void Update() {
@@ -41,7 +48,7 @@ public class Health : MonoBehaviour
         }
 
         if (currentHealth <= 0){
-            gameOver();
+            /// ded ///
         }
     }
 
@@ -53,15 +60,6 @@ public class Health : MonoBehaviour
         else{
         }
         StartCoroutine(Shake());
-
-    }
-
-    public void HealUp(){
-        currentHealth = maxHealth;
-    }
-
-    public void HealUp1(){
-        currentHealth += 1;
     }
 
     IEnumerator Shake() {   
@@ -79,6 +77,14 @@ public class Health : MonoBehaviour
      }
 
     private void gameOver(){
-        Time.timeScale = 1;
+        Time.timeScale = 0;
+    }
+
+    public void UpdateHealth(){
+        SceneData.currentHealth = currentHealth;
+    }
+
+    public void healUp(){
+        currentHealth = maxHealth;
     }
 }
