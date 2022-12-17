@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-enum ToScene
+public enum ToScene
 {
 	MainScene,
 	LeonStage,
@@ -10,7 +10,7 @@ enum ToScene
 	SampleQuizScene
 }
 
-enum EnableMainSceneSection
+public enum EnableMainSceneSection
 {
 	None,
 	Section1,
@@ -69,23 +69,26 @@ public class SwitchScene : MonoBehaviour
 				_pos.UpdatePosition();
 				_hp.UpdateHealth();
 
-				SceneData.currentScene = sceneName.ToString();
+				SceneData.currentScene = sceneName;
 
 				if (enableSection && section != EnableMainSceneSection.None)
 				{
 					if (section == EnableMainSceneSection.Section1 && !SceneData.section1)
 					{
 						SceneData.section1 = true;
+						SceneData.challengeMode = ChallengeMode.FirstChallenge;
 						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
 					}
 					else if (section == EnableMainSceneSection.Section2 && !SceneData.section2)
 					{
 						SceneData.section2 = true;
+						SceneData.challengeMode = ChallengeMode.SecondChallenge;
 						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
 					}
 					else if (section == EnableMainSceneSection.Section3 && !SceneData.section3)
 					{
 						SceneData.section3 = true;
+						SceneData.challengeMode = ChallengeMode.ThirdChallenge;
 						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
 					}
 				}
