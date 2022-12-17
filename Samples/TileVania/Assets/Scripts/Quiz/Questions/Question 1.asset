@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4587f509b1d6442088ad25599276fa78, type: 3}
   m_Name: Question 1
   m_EditorClassIdentifier: 
-  question: What is a variable?
+  question: If we want the value of c is 26, what should we do?
   answers:
-  - Answer 1
-  - Answer 2
-  - Answer 3
-  - Answer 4
-  correctAnswerIndex: 1
+  - 26
+  correctAnswerIndex: 0
+  seedAnswer: "# import sys\n# import System\n# you can import build-in modules (of
+    Python or .NET Clr)\n\n# answer start\n\ndef answer():\n\t# write your own code
+    to solve the challenge here...\n\ta = '12'\n\tb= 14\n\t# ...\n\tc = a + b\n\treturn
+    c\n\n# answer end\n"
