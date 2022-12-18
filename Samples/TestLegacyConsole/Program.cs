@@ -16,21 +16,23 @@ namespace TestLegacyConsole
 # import System
 # you can import build-in modules (of Python or .NET Clr)
 
+from_rod = 'A'
+aux_rod = 'B'
+to_rod = 'C'
+disks_num = 3
+
+# move all disks (3) from rod A to rod C
+
 # answer start
 
 def answer():
 	# write your own code to solve the challenge here...
-	placement = [
-		'........',
-		'........',
-		'........',
-		'........',
-		'........',
-		'........',
-		'........',
-		'........'
+	steps = [
+		{ 'disk': 1, 'from': from_rod, 'to': to_rod },
+		{ 'disk': 2, 'from': from_rod, 'to': aux_rod },
+		{ 'disk': 1, 'from': to_rod, 'to': aux_rod },
 	]
-	return placement
+	return steps
 
 # answer end
 "; 

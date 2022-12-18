@@ -115,7 +115,7 @@ public class CustomGameManager : MonoBehaviour
 		endScreen.gameObject.SetActive(false);
 		secondChallenge.gameObject.SetActive(true);
 		onAnswered = secondChallenge.OnAnswered;
-		onReset = firstChallenge.OnReset;
+		onReset = secondChallenge.OnReset;
 		secondChallenge.onChallengeSolved = () =>
 		{
 			endScreen.gameObject.SetActive(true);
@@ -129,7 +129,7 @@ public class CustomGameManager : MonoBehaviour
 		endScreen.gameObject.SetActive(false);
 		thirdChallenge.gameObject.SetActive(true);
 		onAnswered = thirdChallenge.OnAnswered;
-		onReset = firstChallenge.OnReset;
+		onReset = thirdChallenge.OnReset;
 		thirdChallenge.onChallengeSolved = () =>
 		{
 			endScreen.gameObject.SetActive(true);

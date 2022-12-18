@@ -22,6 +22,7 @@ public class ThirdChallenge : MonoBehaviour
 	private void Start()
 	{
 		codeEditor.Text = seedAnswer;
+		warningText.text = string.Empty;
 		nextButton.interactable = false;
 		OnShowDescription();
 	}
@@ -29,6 +30,7 @@ public class ThirdChallenge : MonoBehaviour
 	public void OnReset()
 	{
 		codeEditor.Text = seedAnswer;
+		warningText.text = string.Empty;
 		nextButton.interactable = false;
 	}
 
