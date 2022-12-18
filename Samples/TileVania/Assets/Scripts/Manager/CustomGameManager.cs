@@ -22,6 +22,11 @@ public class CustomGameManager : MonoBehaviour
 
 	void Start()
 	{
+		endScreen.gameObject.SetActive(false);
+		firstChallenge.gameObject.SetActive(false);
+		secondChallenge.gameObject.SetActive(false);
+		thirdChallenge.gameObject.SetActive(false);
+
 		switch (SceneData.challengeMode)
 		{
 			case ChallengeMode.Quiz:
@@ -29,15 +34,15 @@ public class CustomGameManager : MonoBehaviour
 				SetupQuiz();
 				break;
 			case ChallengeMode.FirstChallenge:
-				title.text = "FIRST CHALLENGE";
+				title.text = "CHALLENGE";
 				SetupFirstChallenge();
 				break;
 			case ChallengeMode.SecondChallenge:
-				title.text = "SECOND CHALLENGE";
+				title.text = "CHALLENGE";
 				SetupSecondChallenge();
 				break;
 			case ChallengeMode.ThirdChallenge:
-				title.text = "SECOND THIRD CHALLENGE";
+				title.text = "CHALLENGE";
 				SetupThirdChallenge();
 				break;
 		}

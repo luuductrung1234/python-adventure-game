@@ -14,5 +14,5 @@ public class SceneData : MonoBehaviour
 	public static bool section1 = false;
 	public static bool section2 = false;
 	public static bool section3 = false;
-	public static ChallengeMode challengeMode = ChallengeMode.FirstChallenge;
+	public static ChallengeMode challengeMode = ChallengeMode.SecondChallenge;
 }
