@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using InGameCodeEditor;
 using IronPython.Custom;
 using IronPython.Runtime;
@@ -77,18 +76,6 @@ public class SecondChallenge : MonoBehaviour
 		}
 
 		StartCoroutine(RunSteps());
-
-		if (!CheckProblemSolved())
-		{
-			warningText.text = "Keep going! Problem is not solved.";
-			warningText.color = Color.yellow;
-		}
-		else
-		{
-			warningText.text = "Well-done! Problem is solved";
-			warningText.color = Color.green;
-			nextButton.interactable = true;
-		}
 	}
 
 	public void OnNext()
@@ -124,6 +111,18 @@ public class SecondChallenge : MonoBehaviour
 			}
 			stepCount++;
 			yield return new WaitForSeconds(1.0f);
+		}
+
+		if (!CheckProblemSolved())
+		{
+			warningText.text = "Keep going! Problem is not solved.";
+			warningText.color = Color.yellow;
+		}
+		else
+		{
+			warningText.text = "Well-done! Problem is solved";
+			warningText.color = Color.green;
+			nextButton.interactable = true;
 		}
 	}
 
@@ -236,7 +235,7 @@ public class SecondChallenge : MonoBehaviour
 from_rod = 'A'
 aux_rod = 'B'
 to_rod = 'C'
-disks_num = 3
+disks_num = 5
 
 # move all disks (3) from rod A to rod C
 

@@ -60,14 +60,73 @@ public class ThirdChallenge : MonoBehaviour
 # import System
 # you can import build-in modules (of Python or .NET Clr)
 
-# move all disks (3) from rod A to rod C
+# constants
+R = C = 5
+m = [
+	['.','.','.','.','.'],
+	['.','.','x','x','.'],
+	['x','.','x','x','.'],
+	['x','.','x','.','.'],
+	['x','.','.','E','.']
+]
+dc = [1, -1, 0, 0]
+dr = [0, 0, -1, 1]
 
-# answer start
+# tracking variables
+rq = []
+cq = []
+visited = [
+  [False, False, False, False, False],
+  [False, False, False, False, False],
+  [False, False, False, False, False],
+  [False, False, False, False, False],
+  [False, False, False, False, False]
+]
+moved_count = 0
+nodes_left_in_layer = 0
+nodes_in_next_layer = 0
+reached_end = False
+path = []
+
+#========================================
+# start answer
 
 def answer():
-	# write your own code to solve the challenge here...
-	return 'hello world'
+  global path
+  explore_maze(0, 0)
+  return path
 
-# answer end
+def explore_maze(sr, sc):
+  '''
+  sr: y co-ordinate of the beginning location
+  sc: x co-ordinate of the beginning location
+  '''
+  path.append({'x': sr, 'y': sc})
+  path.append({'x': 1, 'y': 0})
+  path.append({'x': 1, 'y': 1})
+  
+# end answer
+#========================================
+
+def explore_neighbors(r, c):
+	global R, C, dc, dr, m
+	global rq, cq, visited, nodes_in_next_layer, path
+	for i in range(4):
+		nr = r + dr[i]
+		nc = c + dc[i]
+		if nr < 0 or nr >= R:
+			continue
+		if nc < 0 or nc >= C:
+			continue
+		if visited[nr][nc]:
+			continue
+		if m[nr][nc] == 'x':
+			continue
+		rq.append(nr)
+		cq.append(nc)
+		visited[nr][nc] = True
+		path.append({'x': nc, 'y': nr})
+		nodes_in_next_layer += 1
+
 ";
 }
