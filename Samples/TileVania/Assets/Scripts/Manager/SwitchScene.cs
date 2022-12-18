@@ -92,6 +92,10 @@ public class SwitchScene : MonoBehaviour
 						SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
 					}
 				}
+				else
+				{
+					SceneManager.LoadScene(SceneData.currentScene.ToString());
+				}
 			}
 		}
 	}
