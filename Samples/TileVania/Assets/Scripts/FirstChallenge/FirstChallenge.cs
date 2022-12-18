@@ -16,6 +16,7 @@ public class FirstChallenge : MonoBehaviour
 	[SerializeField] TextMeshProUGUI warningText;
 	[SerializeField] GameObject descriptionView;
 	[SerializeField] GameObject resultView;
+	[SerializeField] Button nextButton;
 
 	[Header("Answer By Code")]
 	[SerializeField]
@@ -42,6 +43,7 @@ public class FirstChallenge : MonoBehaviour
 	private void Start()
 	{
 		codeEditor.Text = seedAnswer;
+		nextButton.interactable = false;
 		OnShowDescription();
 		ResetBoard();
 	}
@@ -49,6 +51,7 @@ public class FirstChallenge : MonoBehaviour
 	public void OnReset()
 	{
 		codeEditor.Text = seedAnswer;
+		nextButton.interactable = false;
 		ResetBoard();
 	}
 
@@ -63,12 +66,14 @@ public class FirstChallenge : MonoBehaviour
 		if (!isExist)
 		{
 			warningText.text = "Your code is invalid!";
+			warningText.color = Color.red;
 			return;
 		}
 		IronPython.Runtime.List rows = (IronPython.Runtime.List)answer();
 		if (rows == null || rows.Count != 8 || rows.Any(row => ((string)row).Length != 8))
 		{
 			warningText.text = "The result of your code is invalid!";
+			warningText.color = Color.red;
 			return;
 		}
 		var blockData = rows.Select(row => ((string)row).ToCharArray()).ToList();
@@ -76,6 +81,7 @@ public class FirstChallenge : MonoBehaviour
 		var placementCount = 0;
 		for (int row = 0; row < 8; row++)
 		{
+			Debug.Log($"Row {row}: {rows[row]}");
 			for (int column = 0; column < 8; column++)
 			{
 				var isError = !Validate(row, column, blockData);
@@ -85,14 +91,24 @@ public class FirstChallenge : MonoBehaviour
 				updateBoardBlock(row, column, isPlacement, isError);
 			}
 		}
+
+		Debug.Log($"Problem solved: {problemNotSolved} | Placement cound: {placementCount}");
 		if (problemNotSolved || placementCount < 8)
 		{
 			warningText.text = "Fail! Problem is not solved";
+			warningText.color = Color.red;
 		}
 		else
 		{
-			onChallengeSolved();
+			warningText.text = "Well-done! Problem is solved";
+			warningText.color = Color.green;
+			nextButton.interactable = true;
 		}
+	}
+
+	public void OnNext()
+	{
+		onChallengeSolved();
 	}
 
 	public void OnShowDescription()
