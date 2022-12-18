@@ -216,10 +216,13 @@ namespace IronPython.Custom
 			isExist = scope.TryGetVariable("answer", out var answer);
 			if (isExist)
 			{
-				Runtime.List rows = (Runtime.List)answer();
-				foreach (string row in rows)
+				Runtime.List steps = (Runtime.List)answer();
+				foreach (Runtime.PythonDictionary step in steps)
 				{
-					Logging($"{row}");
+					var disk = (int) step["disk"];
+					var from = (string) step["from"];
+					var to = (string) step["to"];
+					Logging($"move {disk} from {from} to {to}");
 				}
 			}
 		}

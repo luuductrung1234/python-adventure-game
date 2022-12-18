@@ -9,8 +9,6 @@ using UnityEngine.UI;
 
 public class FirstChallenge : MonoBehaviour
 {
-	private static string ERROR_MESSAGE = "Still have queens attack each other";
-
 	[Header("Questions")]
 	[SerializeField] TextMeshProUGUI questionText;
 	[SerializeField] TextMeshProUGUI warningText;
@@ -43,6 +41,7 @@ public class FirstChallenge : MonoBehaviour
 	private void Start()
 	{
 		codeEditor.Text = seedAnswer;
+		warningText.text = string.Empty;
 		nextButton.interactable = false;
 		OnShowDescription();
 		ResetBoard();
@@ -51,6 +50,7 @@ public class FirstChallenge : MonoBehaviour
 	public void OnReset()
 	{
 		codeEditor.Text = seedAnswer;
+		warningText.text = string.Empty;
 		nextButton.interactable = false;
 		ResetBoard();
 	}
@@ -92,7 +92,7 @@ public class FirstChallenge : MonoBehaviour
 			}
 		}
 
-		Debug.Log($"Problem solved: {problemNotSolved} | Placement cound: {placementCount}");
+		Debug.Log($"Problem solved: {problemNotSolved} | Placement count: {placementCount}");
 		if (problemNotSolved || placementCount < 8)
 		{
 			warningText.text = "Fail! Problem is not solved";
