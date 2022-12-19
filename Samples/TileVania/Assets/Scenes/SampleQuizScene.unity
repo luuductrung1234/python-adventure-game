@@ -15091,7 +15091,7 @@ MonoBehaviour:
   obstacle: {fileID: 21300000, guid: cf1cdc554c2804711bb11f3c6425bf2a, type: 3}
   visitedBlank: {fileID: 21300000, guid: a9dc20d35b44745509a7bf8de2fb5676, type: 3}
   visitedStart: {fileID: 21300000, guid: f9e868b5d7bc8480bb55f2fd9de4d6be, type: 3}
-  visitedEnd: {fileID: 21300000, guid: 1a77faa3e3d88438ead878185bc6a14a, type: 3}
+  visitedEnd: {fileID: 21300000, guid: 5fd9d1a130c2144df805accf39e6dded, type: 3}
 --- !u!1 &1548950706
 GameObject:
   m_ObjectHideFlags: 0
