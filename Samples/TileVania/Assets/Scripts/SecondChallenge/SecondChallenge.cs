@@ -32,6 +32,7 @@ public class SecondChallenge : MonoBehaviour
 	private List<GameObject> disksOnRobB;
 	[SerializeField]
 	private List<GameObject> disksOnRobC;
+
 	private IronPython.Runtime.List steps;
 
 	public Action onChallengeSolved;
@@ -55,6 +56,7 @@ public class SecondChallenge : MonoBehaviour
 
 	public void OnAnswered()
 	{
+		ResetRobs();
 		var sourceCode = codeEditor.Text;
 		var myPython = new MyPython(Debug.Log);
 		warningText.text = string.Empty;
