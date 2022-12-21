@@ -22,17 +22,9 @@ public class CustomGameManager : MonoBehaviour
 
 	void Start()
 	{
-		endScreen.gameObject.SetActive(false);
-		firstChallenge.gameObject.SetActive(false);
-		secondChallenge.gameObject.SetActive(false);
-		thirdChallenge.gameObject.SetActive(false);
-
+		Reset();
 		switch (SceneData.challengeMode)
 		{
-			case ChallengeMode.Quiz:
-				title.text = "QUICK QUIZ";
-				SetupQuiz();
-				break;
 			case ChallengeMode.FirstChallenge:
 				title.text = "CHALLENGE";
 				SetupFirstChallenge();
@@ -44,6 +36,10 @@ public class CustomGameManager : MonoBehaviour
 			case ChallengeMode.ThirdChallenge:
 				title.text = "CHALLENGE";
 				SetupThirdChallenge();
+				break;
+			default:
+				title.text = "QUICK QUIZ";
+				SetupQuiz();
 				break;
 		}
 	}
@@ -82,6 +78,7 @@ public class CustomGameManager : MonoBehaviour
 
 	public void SetupQuiz()
 	{
+		Reset();
 		endScreen.gameObject.SetActive(false);
 		quiz.gameObject.SetActive(true);
 		onAnswered = quiz.OnAnswered;
@@ -98,6 +95,7 @@ public class CustomGameManager : MonoBehaviour
 
 	public void SetupFirstChallenge()
 	{
+		Reset();
 		endScreen.gameObject.SetActive(false);
 		firstChallenge.gameObject.SetActive(true);
 		onAnswered = firstChallenge.OnAnswered;
@@ -112,6 +110,7 @@ public class CustomGameManager : MonoBehaviour
 
 	public void SetupSecondChallenge()
 	{
+		Reset();
 		endScreen.gameObject.SetActive(false);
 		secondChallenge.gameObject.SetActive(true);
 		onAnswered = secondChallenge.OnAnswered;
@@ -126,6 +125,7 @@ public class CustomGameManager : MonoBehaviour
 
 	public void SetupThirdChallenge()
 	{
+		Reset();
 		endScreen.gameObject.SetActive(false);
 		thirdChallenge.gameObject.SetActive(true);
 		onAnswered = thirdChallenge.OnAnswered;
@@ -136,5 +136,13 @@ public class CustomGameManager : MonoBehaviour
 			endScreen.SetScoreText("Congratulation! The third challenge has been solved.\nNew map unlocked!");
 			thirdChallenge.gameObject.SetActive(false);
 		};
+	}
+
+	private void Reset()
+	{
+		endScreen.gameObject.SetActive(false);
+		firstChallenge.gameObject.SetActive(false);
+		secondChallenge.gameObject.SetActive(false);
+		thirdChallenge.gameObject.SetActive(false);
 	}
 }

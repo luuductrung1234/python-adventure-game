@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -63,6 +64,7 @@ public class Health : MonoBehaviour
 
 		if (currentHealth <= 0)
 		{
+			SceneData.currentScene = Enum.Parse<ToScene>(SceneManager.GetActiveScene().name);
 			SceneData.currentHealth = 0;
 			SceneData.challengeMode = ChallengeMode.Quiz;
 			SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
