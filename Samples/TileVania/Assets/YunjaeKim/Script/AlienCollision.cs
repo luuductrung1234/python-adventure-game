@@ -40,6 +40,7 @@ public class AlienCollision : MonoBehaviour
         Y_debug();
         _x = Input.GetAxisRaw("Horizontal");
         _up = Input.GetAxis("Vertical");
+        Debug.Log(isGround);
 
 
 
@@ -135,6 +136,10 @@ public class AlienCollision : MonoBehaviour
             isGround = false;
         }
 
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
     }
 
 }

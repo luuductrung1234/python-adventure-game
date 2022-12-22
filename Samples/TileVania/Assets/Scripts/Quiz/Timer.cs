@@ -5,8 +5,9 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
 	[SerializeField] float timeToCompleteQuestion = 30f;
-	[SerializeField] float timeToShowCorrectAnswer = 10f;
-	[SerializeField] Image timerImage;
+	[SerializeField] float timeToShowCorrectAnswer = 7f;
+	[SerializeField] GameObject timerImage;
+	[SerializeField] GameObject idleImage;
 	public bool isAnsweringQuestion = false;
 	public Action<bool> timeoutAction = null;
 	private float timerValue;
@@ -29,7 +30,20 @@ public class Timer : MonoBehaviour
 
 	private void UpdateTimerImage()
 	{
-		timerImage.fillAmount = timerValue / GetTimeByStage();
+		if (isAnsweringQuestion)
+		{
+			var image = timerImage.GetComponent<Image>();
+			timerImage.SetActive(true);
+			idleImage.SetActive(false);
+			image.fillAmount = timerValue / GetTimeByStage();
+		}
+		else
+		{
+			var image = idleImage.GetComponent<Image>();
+			timerImage.SetActive(false);
+			idleImage.SetActive(true);
+			image.fillAmount = timerValue / GetTimeByStage();
+		}
 	}
 
 	private void UpdateTimer()
