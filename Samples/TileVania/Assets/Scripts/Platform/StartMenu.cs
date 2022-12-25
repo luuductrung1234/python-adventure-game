@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class StartMenu : MonoBehaviour
 {
     public void PlayButton(){
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("Tutorial");
     }
 
     public void QuitButton(){
