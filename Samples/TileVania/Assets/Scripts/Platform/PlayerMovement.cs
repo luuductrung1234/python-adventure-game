@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     private SpriteRenderer sr;
     private Animator anim;
 
+    [SerializeField]
+    private AudioSource jumpSound;
+
     string currentScene;
 
     private void Awake() {
@@ -82,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
     bool isOnGround = true;
     void PLayerJump(){
         if (Input.GetButtonDown(JUMP_ANIMATION) && isOnGround){
+            jumpSound.Play();
             isOnGround = false;
             myBody.AddForce(new Vector2(0f, jumpFroces), ForceMode2D.Impulse);
             anim.SetBool(JUMP_ANIMATION, true);

@@ -14,6 +14,9 @@ public class Health : MonoBehaviour
 	public Sprite emptyHeart;
 
 	private Transform playerPos;
+	
+	[SerializeField]
+	private AudioSource takeDamage, healing;
 
 	private void Awake()
 	{
@@ -73,6 +76,7 @@ public class Health : MonoBehaviour
 
 	public void DeductHealth()
 	{
+		takeDamage.Play();
 		currentHealth -= 1;
 		if (currentHealth <= 0)
 		{
@@ -111,6 +115,7 @@ public class Health : MonoBehaviour
 
 	public void healUp()
 	{
+		healing.Play();
 		currentHealth = maxHealth;
 	}
 }
