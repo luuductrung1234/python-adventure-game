@@ -46,13 +46,21 @@ public class Quiz : MonoBehaviour
 		progressBar.maxValue = maxQuestion;
 		progressBar.value = 0;
 
+		var questionDisplayed = false;
+		Debug.Log("Trigger Quiz start");
 		timer.timeoutAction = (bool isAnsweringQuestion) =>
 		{
+			Debug.Log("Trigger timer timeout");
 			if (isAnsweringQuestion)
+			{
 				GetNextQuestion();
+				questionDisplayed = true;
+			}
 			else if (!isAnswered)
 				DisplayAnswer(-1);
 		};
+		if (!questionDisplayed)
+			GetNextQuestion();
 	}
 
 	public void OnAnswerSelected(int index)

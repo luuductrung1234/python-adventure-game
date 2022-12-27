@@ -14,6 +14,7 @@ public class Timer : MonoBehaviour
 
 	private void Start()
 	{
+		Debug.Log("Trigger Timer start");
 		timerValue = 0f;
 	}
 

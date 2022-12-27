@@ -2424,6 +2424,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ReplayButton
       objectReference: {fileID: 0}
+    - target: {fileID: 1405142252831714292, guid: 9672e3fd368a844bdb9e5594b4a8c850, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1405142252831714294, guid: 9672e3fd368a844bdb9e5594b4a8c850, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
