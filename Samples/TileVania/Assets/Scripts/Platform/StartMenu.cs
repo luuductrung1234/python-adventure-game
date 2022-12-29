@@ -12,4 +12,8 @@ public class StartMenu : MonoBehaviour
     public void QuitButton(){
         Application.Quit();
     }
+
+    public void ReviveButton(){
+        SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
+    }
 }
