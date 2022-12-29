@@ -70,7 +70,7 @@ public class Health : MonoBehaviour
 			SceneData.currentScene = Enum.Parse<ToScene>(SceneManager.GetActiveScene().name);
 			SceneData.currentHealth = 0;
 			SceneData.challengeMode = ChallengeMode.Quiz;
-			SceneManager.LoadScene(ToScene.SampleQuizScene.ToString());
+			SceneManager.LoadScene("LoseScene");
 		}
 	}
 
