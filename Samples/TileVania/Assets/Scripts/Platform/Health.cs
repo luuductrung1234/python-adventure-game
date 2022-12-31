@@ -1,3 +1,10 @@
+/***************************************************************
+*Title: HOW TO MAKE HEART/HEALTH SYSTEM - UNITY TUTORIAL
+*Author: Blackthornprod
+*Date: 02 March 2018
+*Availability: https://youtu.be/3uyolYVsiWc
+****************************************************************/
+
 using System;
 using System.Collections;
 using UnityEngine;

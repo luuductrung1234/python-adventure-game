@@ -1,3 +1,10 @@
+/***************************************************************
+*Title: Learn Unity - Beginner's Game Development Tutorial
+*Author: Fahir from Awesome Tuts
+*Date: 15 Apirl, 2021
+*Availability: https://youtu.be/gB1F9G0JXOo?t=13826 
+****************************************************************/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
