@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: n/a
+*Author: Pham Hoang Long
+*Date: n/a
+*Availability: n/a
+*Code version: V1
+****************************************************************/
+
 using UnityEngine;
 
 public class Trap : MonoBehaviour
