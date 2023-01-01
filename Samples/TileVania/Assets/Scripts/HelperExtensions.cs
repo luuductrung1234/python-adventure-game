@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: More efficient way to get all indexes of a character in a string
+*Author: m.zam
+*Date: 7 October 2012
+*Availability: https://stackoverflow.com/a/12765894, (accessed 22 November 2022)
+*Code version: n/a
+****************************************************************/
+
 using System.Collections.Generic;
 
 namespace IronPython.Custom

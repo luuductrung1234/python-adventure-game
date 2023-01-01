@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: n/a
+*Author: Luu Duc Trung
+*Date: n/a
+*Availability: n/a
+*Code version: n/a
+****************************************************************/
+
 namespace IronPython.Custom
 {
 	public enum AdvancedTokenKind

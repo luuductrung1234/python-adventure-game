@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: Github, IronLanguages/ironpython3, Token
+*Author: solzier
+*Date: 14 March 2022
+*Availability: https://github.com/IronLanguages/ironpython3/blob/master/Src/IronPython/Compiler/Token.cs, (accessed 23 November 2022)
+*Code version: 3.4.0
+****************************************************************/
+
 using IronPython.Compiler;
 using IronPython.Compiler.Ast;
 using Microsoft.Scripting;

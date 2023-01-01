@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: Github, IronLanguages/ironpython3, VariableKind
+*Author: BCSharp
+*Date: 9 August 2022
+*Availability: https://github.com/IronLanguages/ironpython3/blob/master/Src/IronPython/Compiler/Ast/VariableKind.cs, (accessed 23 November 2022)
+*Code version: 3.4.0
+****************************************************************/
+
 namespace IronPython.Custom
 {
 
