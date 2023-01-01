@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: n/a
+*Author: Luu Duc Trung
+*Date: n/a
+*Availability: n/a
+*Code version: n/a
+****************************************************************/
+
 using System;
 using System.Collections.Generic;
 using IronPython.Compiler;

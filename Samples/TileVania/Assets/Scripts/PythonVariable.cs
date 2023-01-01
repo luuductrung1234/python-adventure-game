@@ -1,3 +1,11 @@
+/***************************************************************
+*Title: Github, IronLanguages/ironpython3, PythonVariable
+*Author: BCSharp
+*Date: 03 September 2022
+*Availability: https://github.com/IronLanguages/ironpython3/blob/master/Src/IronPython/Compiler/Ast/PythonVariable.cs, (accessed 23 November 2022)
+*Code version: 3.4.0
+****************************************************************/
+
 #nullable enable
 
 using MSAst = System.Linq.Expressions;
